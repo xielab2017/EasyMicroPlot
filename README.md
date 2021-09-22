@@ -1,6 +1,6 @@
 # EasyMicroPlot-- A easy R script plot  for Microbiome  analysis
 
-EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.This package was specially designed to address problems above and perform regular down-stream analysis covering core tasks of metagenomic analysis from start to finish for clinic meta-data and microbiomics computation and visualization.![image](https://user-images.githubusercontent.com/26839870/134389954-c61f98cd-57eb-4078-860c-8c5a0fbc37ca.png)
+EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.This package was specially designed to address problems above and perform regular down-stream analysis covering core tasks of metagenomic analysis from start to finish for clinic meta-data and microbiomics computation and visualization.
 
 
 ## PACKAGES DEPENDENCIES 
@@ -52,5 +52,6 @@ EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool o
 * cor_plot_heat
 * cor_plot_detail
 
-## USAGE (out of date)
+## USAGE and Tutorial
+https://github.com/xielab2017/EasyMicroPlot/wiki
 

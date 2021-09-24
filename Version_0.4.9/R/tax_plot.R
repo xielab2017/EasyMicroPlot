@@ -1,4 +1,4 @@
-tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,mytheme=theme_bw(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
           "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   if (!is.null(tax_select)) {
     data <- data[,c('SampleID','Group',tax_select)]
@@ -17,7 +17,7 @@ tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   for (i in feature_name) {
     p1 <- eval(substitute(ggplot(data=data,aes(x=Group,y=data[,i] ))+geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA)+
       ylab(i)+ggpubr::stat_compare_means(comparisons = compare,method="t.test")+scale_fill_manual(values=palette)+
-      ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+mytheme, list( i =i)))
+      ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw() + mytheme, list( i =i)))
     # 注意html生成时应基于随机种子
     set.seed(seed)
     p1_html <- ggiraph::girafe(code = print(p1),width = width,height = height)
@@ -32,7 +32,7 @@ tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
     ggpubr::stat_compare_means(comparisons = compare,method="t.test")+
     scale_fill_manual(values =palette) +
     labs(x = '', y = 'Relative abundance')+ 
-    ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+mytheme
+    ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw() + mytheme
   
   set.seed(seed)
   p_total_html <- ggiraph::girafe(code = print(p_total),width = width_total,height = height_total)
@@ -41,7 +41,7 @@ tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   return(deposit)
 }
 
-tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,method='HSD',mytheme=theme_bw(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
           "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   if (!is.null(tax_select)) {
   data <- data[,c('SampleID','Group',tax_select)]
@@ -102,7 +102,7 @@ tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
     p1 <- eval(substitute(ggplot(data=data,aes(x=Group,y=data[,i] ))+geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA)+
       ylab(i)+scale_fill_manual(values=palette)+
       geom_text(data = tax_result_letter,aes(x = Group,y=max(data[,i])*1.1,label = tax_result_letter[,i]),
-                size = 7,color = "black") + mytheme+
+                size = 7,color = "black") + theme_bw() + mytheme +
       ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001)),list(i=i))) 
     # 注意html生成时应基于随机种子
     set.seed(seed)
@@ -118,7 +118,7 @@ tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
     geom_text(data = tax_result_letter_for_total,aes(x = Group,y=ymax*1.1,label = value),size = 7,color = "black")+
     facet_wrap(~variable, scales = 'free_y', ncol = NULL) +
     scale_fill_manual(values =palette) +
-    labs(x = '', y = 'Relative abundance') + mytheme+ 
+    labs(x = '', y = 'Relative abundance') + theme_bw() + mytheme + 
     ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',value)),position = position_jitter(height = .00000001))
   
   set.seed(seed)
@@ -128,7 +128,7 @@ tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   return(deposit)
 }
 
-tax_plot <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,method='HSD',mytheme=theme_bw(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                                                                                                                              "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   deposit <- list()
   mtest_pool=c('HSD','LSD','duncan','scheffe','REGW','SNK')

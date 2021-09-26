@@ -1,6 +1,6 @@
 # EasyMicroPlot-- A easy R script plot  for Microbiome  analysis
 
-![](https://img.shields.io/badge/R--language->=3.6-brightgreen.svg)
+![](https://img.shields.io/badge/R%20language->=3.6-brightgreen.svg)
 ![](https://img.shields.io/badge/Mac--OSX-Available-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-Available-brightgreen.svg)
 ![](https://img.shields.io/badge/Version-0.4.9.9-brightgreen.svg)

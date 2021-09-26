@@ -1,7 +1,8 @@
 # EasyMicroPlot-- A easy R script plot  for Microbiome  analysis
 
 ![](https://img.shields.io/badge/MacOSX&Windows-Available-brightgreen.svg)
-![](https://img.shields.io/badge/Version-brightgreen.svg)
+![](https://img.shields.io/badge/Version-0.4.9.9-brightgreen.svg)
+![](https://awesome-r.com/#awesome-r-graphic-displays)
 
 EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.This package was specially designed to address problems above and perform regular down-stream analysis covering core tasks of metagenomic analysis from start to finish for clinic meta-data and microbiomics computation and visualization.
 

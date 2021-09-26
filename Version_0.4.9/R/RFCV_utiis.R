@@ -220,7 +220,7 @@ RFCV <- function(RF,seed_start=123,ntree=1000,kfold=5,rep=10,RF_importance=1,ste
   deposit <- list()
   RF <- try(RF <- subset(RF,select=-c(SampleID)),silent=T)
   result <- RFCVSEED(rep = rep,RF,seed_start = seed_start,ntree = ntree,
-                   kfold = kfold,RF_importance = RF_importance,step = step)
+                   kfold = kfold,RF_importance = RF_importance,step = step,each_ouput=each_ouput)
   result_plot <- RFCV_plot(data = result,x_break = x_break,
                            cutoff_colour = cutoff_colour,palette = palette) 
   deposit$RFCV_data <- RF

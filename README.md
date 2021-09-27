@@ -1,4 +1,4 @@
-# EasyMicroPlot-- A easy R script plot  for Microbiome  analysis
+# EasyMicroPlot: A standard and Convenient R package in Microbiome Down-Stream Analysis and Visualization for Clinical Study
 
 ![](https://img.shields.io/badge/R%20language->=3.6-brightgreen.svg)
 ![](https://img.shields.io/badge/Mac%20OSX%20&%20Windows-Available-brightgreen.svg)

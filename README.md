@@ -58,5 +58,5 @@ EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool o
 * cor_plot_detail
 
 ## USAGE and Tutorial
-https://github.com/xielab2017/EasyMicroPlot/wiki
+https://github.com/xielab2017/EasyMicroPlot/wiki  
 https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home （for backup)

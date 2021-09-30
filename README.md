@@ -59,4 +59,4 @@ EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool o
 
 ## USAGE and Tutorial
 https://github.com/xielab2017/EasyMicroPlot/wiki  
-https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home （for backup)
+https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home （For users who connect github poorly )

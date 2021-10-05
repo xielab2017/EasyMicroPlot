@@ -34,6 +34,7 @@ alpha_plot_ttest <- function(data,design,seed=123,width=10,height=10,row_panel=N
   data=data
   mapping=design
   try(mapping<-read.table(paste0(design),header = T),silent = T)
+  mapping <- subset(mapping,select = c(SampleID,Group))
   # 检查输入的group 新顺序是否符合要求，来决定是否使用默认字符串顺序
   name_group=unique(mapping$Group)
   group_level_check=all(name_group%in%group_level)&all(group_level%in%name_group)

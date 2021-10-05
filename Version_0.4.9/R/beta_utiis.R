@@ -375,6 +375,7 @@ data_filter=function(dir,min_relative,min_ratio,design,adjust=F,output=F,pattern
   try(mapping$Group <- as.character(mapping$Group),silent=T)
   try(mapping$Group <- as.factor(mapping$Group),silent=T)
   try(mapping<-read.table(paste0(design),header = T,check.names = F,sep = "\t",stringsAsFactors = F),silent = T)
+  mapping <- subset(mapping,select = c(SampleID,Group))
   deposit=list()
   for (i in c(1:file_num)){
     file_data=read.table(paste0(dir,'/',file_name[i]),sep='\t',header=T,check.names = F,row.names= 1)

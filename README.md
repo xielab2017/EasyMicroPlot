@@ -1,5 +1,5 @@
 # EasyMicroPlot: A Standard and Convenient R package in Microbiome Down-Stream Analysis and Visualization for Clinical Study
-
+<a href="https://github.com/xielab2017/EasyMicroPlot/wiki"><img src="https://github.com/xielab2017/EasyMicroPlot/blob/main/Tutorial%20plot/logo.png" width=150 align="right" ></a>
 ![](https://img.shields.io/badge/R%20language->=3.6-brightgreen.svg)
 ![](https://img.shields.io/badge/Mac%20OSX%20&%20Windows-Available-brightgreen.svg)
 ![](https://img.shields.io/badge/Release%20version-0.4.9.9-brightgreen.svg)

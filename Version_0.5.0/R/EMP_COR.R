@@ -34,6 +34,9 @@ getSig <- function(dc) {
 }
 cor_plot_heat <-function(data,meta_data,method = 'spearman',width=10,height=10,cor_output=F,file_name='cor_plot'){
   deposit <- list()
+  real_sample <- intersect(meta_data$SampleID,data$SampleID)
+  data <- data[data$SampleID%in%real_sample, ]
+  meta_data <- meta_data[meta_data$SampleID%in%real_sample, ]
   try(data <- subset(data,select = -c(Group)), silent = T)
   data.corr <- psych::corr.test(data[,-1], meta_data[,-1],method = 'spearman',adjust='none')
   data.r <- data.corr$r

@@ -7,7 +7,7 @@
 \section{Description}{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.This package was specially designed to address problems above and perform regular down-stream analysis covering core tasks of metagenomic analysis from start to finish for clinic meta-data and microbiomics computation and visualization.
+EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.
 }
 
 \section{Function}{
@@ -40,7 +40,7 @@ EMP COR: Correlation analysis and visualization between meta and microbial data.
 Useful links:
 \itemize{
   \item \url{https://github.com/xielab2017/EasyMicroPlot/wiki}
-  \item \url{https://gitee.com/xielab2017/EasyMicroPlot/wiki}
+  \item \url{https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home}
 }
 }
 

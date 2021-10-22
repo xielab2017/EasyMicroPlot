@@ -123,11 +123,11 @@ data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,o
       }
       
       if (output==T){
-        dir.create(tax_total[sep_num[i]])
+        dir.create('Filter_result')
         write.csv(sub_data, file =paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%.csv"),row.names = F)
         write.csv(tax_names, file =paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%_info.csv"))
-        file_move(paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%.csv"),tax_level)
-        file_move(paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%_info.csv"),tax_level)
+        file_move(paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%.csv"),'Filter_result')
+        file_move(paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%_info.csv"),'Filter_result')
       }
       # 取消数据的因子，减少后续分析因为因子水平所导致的问题
       sub_data$SampleID <- as.character(sub_data$SampleID)

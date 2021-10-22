@@ -123,7 +123,7 @@ data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,o
       }
       
       if (output==T){
-        dir.create('Filter_result')
+        suppressWarnings(try(dir.create('Filter_result'),silent=T))
         write.csv(sub_data, file =paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%.csv"),row.names = F)
         write.csv(tax_names, file =paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%_info.csv"))
         file_move(paste0(tax_level,'_',min_relative,"_",min_ratio*100,"%.csv"),'Filter_result')

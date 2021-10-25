@@ -61,7 +61,8 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 ## AMAZING FEATURE
 When mapping and microbial relative abundance  filies have already been deposited in working directory,           
 users could activate easy mode to perform a complete workflow with default parameters and generate results in workspace.  
-[Cilik this for demo data](https://github.com/xielab2017/EasyMicroPlot/blob/main/Tutorial%20data/Easy_mode_data.7z)
+Demo data at this repository: ``` Tutorial data/Easy_mode_data.7z```
+
 ```
 EMP_MICRO()
 ``` 

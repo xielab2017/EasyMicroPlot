@@ -60,7 +60,7 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 
 ## AMAZING FEATURE
 When mapping and microbial relative abundance  filies have already been deposited in working directory,           
-users could activate easy mode to perform a complete workflow with default parameters start and generate results in workspace.
+users could activate easy mode to perform a complete workflow with default parameters and generate results in workspace.
 ```
 EMP_MICRO()
 ``` 

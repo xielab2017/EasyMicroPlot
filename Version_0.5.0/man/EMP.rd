@@ -7,7 +7,7 @@
 \section{Description}{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-EasyMicroPlot packages aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.
+EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.
 }
 
 \section{Function}{

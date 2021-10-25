@@ -7,17 +7,16 @@
 \section{Description}{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.
+EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic downstream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinical studies.
 }
 
 \section{Function}{
-EMP META: Meta data analysis and visualization.
+\code{\link{EMP_META}} : Meta data analysis and visualization.
 \itemize{
-	\item \code{\link{EMP_META}} 
 	\item \code{\link{meta_summary}}  
  	\item \code{\link{meta_regroup}}
 }
-EMP MICRO: Microbial data analysis and visualization.
+\code{\link{EMP_MICRO}} : Microbial data analysis and visualization.
 \itemize{
 	\item \code{\link{EMP_MICRO}} 
 	\item \code{\link{data_filter}} 
@@ -30,7 +29,7 @@ EMP MICRO: Microbial data analysis and visualization.
  	\item \code{\link{RFCV_data_binary}}
  	\item \code{\link{RFCV_roc}}
 }
-EMP COR: Correlation analysis and visualization between meta and microbial data.
+\code{\link{EMP_COR}} : Correlation analysis and visualization between meta and microbial data.
 \itemize{
 	\item \code{\link{EMP_COR}}  
 }

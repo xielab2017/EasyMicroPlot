@@ -35,7 +35,7 @@ Summary and regroup function for meta data.
 
 ## Identify the categorical and continuous variable
  col_str <- 'MetS'
- col_num=colnames(meta_data)[!colnames(meta_data) %in% c('SampleID','MetS','Diarrhea','Astriction','Antibiotics','Synbiotics')]
+ col_num <- colnames(meta_data)[!colnames(meta_data) %in% c('SampleID','MetS','Diarrhea','Astriction','Antibiotics','Synbiotics')]
  col_num
 
 

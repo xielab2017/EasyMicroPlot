@@ -2,7 +2,7 @@
 \name{EasyMicroPlot-package}
 \alias{EMP}
 \alias{EMP-package}
-\title{EasyMicroPlot: A Standard and Convenient R package in Microbiome Down-Stream Analysis and Visualization for Clinical Study}
+\title{EasyMicroPlot: An Efficient and Convenient R package in Microbiome Down-Stream Analysis and Visualization for Clinical Study}
 
 \section{Description}{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}

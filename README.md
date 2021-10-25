@@ -57,6 +57,41 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 * cor_plot_heat
 * cor_plot_detail
 
+
+## AMAZING FEATURE
+When mapping and microbial relative abundance  filies have already been deposited in working directory,           
+users could activate easy mode to perform a complete workflow with default parameters start and generate results in workspace.
+```
+EMP_MICRO()
+``` 
+
+```  
+./Result
+├── RFCV_result
+│   ├── Imprortance
+│   ├── model
+│   └── taxonomy
+├── alpha_result
+│   ├── Post-Hoc
+│   ├── data
+│   ├── html
+│   └── pic
+├── beta_result
+│   ├── bray_0.001_0.7
+│   └── jaccard_0.001_0.7
+├── cooc_result
+│   └── pic
+├── core_data
+│   ├── species_0.001_70%.txt
+│   └── species_0.001_70%_info.txt
+└── structure_result
+    ├── pic
+    ├── taxonomy
+    └── top_abundance
+```
+
+
+
 ## USAGE and Tutorial
 https://github.com/xielab2017/EasyMicroPlot/wiki  
 https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home （For users who connect github poorly )

@@ -41,7 +41,7 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 
 
 				
-## Main FUNCTION
+## MAIN FUNCTION
 
 * data_filter
 * pca_boxplot

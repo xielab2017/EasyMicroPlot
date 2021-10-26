@@ -38,10 +38,9 @@ Filtering data and making alpha diversity plot.
            method = 'LSD')
 ## Support ggplot theme parameters
  library(ggplot2)
- newtheme=newtheme_slope=theme(axis.text.x =element_text(angle = 90, hjust = -1,size = 15),
-                                       axis.title=element_text(size=15,face="bold",colour = 'black'))
+ newtheme_slope=theme(axis.text.x =element_text(angle = 45, hjust = 1,size = 10))
  alpha_re=alpha_plot(data = EMP$micro,design = EMP$mapping,min_relative = 0.001,min_ratio = 0.7,
-                    method = 'ttest',mytheme = newtheme) 
+                    method = 'ttest',mytheme = newtheme_slope) 
 
 ## Plot 
  alpha_re$plot$species$pic$Total

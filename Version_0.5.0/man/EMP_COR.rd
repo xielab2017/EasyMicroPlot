@@ -30,6 +30,7 @@ Correlation analysis between microbial data and meta information.
 
 ## Analysis and plot
 ## When ** cor_output = T **, cooc picture is generated in working directory.
- cor_re <- EMP_COR(data = sp,meta=EMP$iron,cor_output = T,method = 'spearman')
+ cor_re <- EMP_COR(data = sp,meta=EMP$iron,cor_output = T,method = 'spearman',aes_value = 1)
+ cor_re <- EMP_COR(data = sp,meta=EMP$iron,cor_output = T,method = 'spearman',aes_value = 2)
 
 }

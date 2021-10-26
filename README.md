@@ -8,6 +8,16 @@
 EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on R platform that accomplishes the core tasks of metagenomic down-stream analysis from start to finish, specially designed by screening popular microbial analysis and visualization metric in recent clinic studies.
 
 
+
+
+## INSTALLATION
+
+	if(! require("devtools")) install.packages("devtools")
+	library(devtools)
+	install_github("xielab2017/EasyMicroPlot",subdir='Version_0.5.0')
+
+
+				
 ## PACKAGES DEPENDENCIES 
 * vegan (>= 2.5-6)
 * ape (>= 5.3) 
@@ -32,30 +42,6 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 * orrplot (>= 0.84)
 * pheatmap (>= 1.0.12)
 * igraph (>= 1.2.6)
-
-## INSTALLATION
-
-	if(! require("devtools")) install.packages("devtools")
-	library(devtools)
-	install_github("xielab2017/EasyMicroPlot",subdir='Version_0.5.0')
-
-
-				
-## MAIN FUNCTION
-
-* data_filter
-* pca_boxplot
-* alpha_plot
-* beta_plot
-* alpha_caculate
-* structure_plot
-* cooc_plot
-* tax_plot
-* RFCV
-* RFCV_roc
-* RFCV_data_binary
-* cor_plot_heat
-* cor_plot_detail
 
 
 ## AMAZING FEATURE

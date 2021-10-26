@@ -39,7 +39,6 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 Useful links:
 \itemize{
   \item \url{https://github.com/xielab2017/EasyMicroPlot/wiki}
-  \item \url{https://gitee.com/xielab2017/EasyMicroPlot/wikis/Home}
 }
 }
 

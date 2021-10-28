@@ -43,7 +43,8 @@ Filtering data and making alpha diversity plot.
                     method = 'ttest',mytheme = newtheme_slope) 
 
 ## Plot 
- alpha_re$plot$species$pic$Total
+ alpha_re$plot$species$pic$Total # for species 
+ alpha_re$plot$phylum$pic$Total # for phylum
 
 ## Interactive visualization
  alpha_re$plot$species$html$Total

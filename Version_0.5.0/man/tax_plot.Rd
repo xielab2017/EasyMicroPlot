@@ -14,8 +14,8 @@ Perform statistics measurement for bacteria taxa.
   \item{height_total}{Total plot height. [Default:20]}
   \item{width}{Each plot width. [Default:10]}
   \item{height}{Each plot height. [Default:8]}
-  \item{seed}{Output filter data at different levels. [Default:False]}
-  \item{row_panel}{Each plot height.}
+  \item{seed}{Random number of seed. [Default:123]}
+  \item{row_panel}{Pannel array.[Default:NULL]}
   \item{method}{Set method in comparison: HSD(default),ttest,LSD,duncan,scheffe,REGW,SNK}
   \item{mytheme}{Theme design.}
   \item{palette}{Colour palette.}
@@ -34,9 +34,9 @@ Perform statistics measurement for bacteria taxa.
 
 ## Taxonomy boxplot
 ## For Student -Test in comparation
- tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'ttest')
+ tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'ttest',width = 5,height = 5)
 ## For one-way ANOVA and Post Hoc test
- tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'SNK')
+ tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'SNK',width = 5,height = 5)
 
 ## Plot
  tax_re$pic$V14
@@ -47,7 +47,7 @@ Perform statistics measurement for bacteria taxa.
 ## Support ggplot theme parameters
  library(ggplot2)
  newtheme_slope=theme(axis.text.x =element_text(angle = 45, hjust = 1,size = 10))
- tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'ttest',mytheme = newtheme_slope)
+ tax_re <- tax_plot(data = sp,tax_select = c('V14','V15','V16'),method = 'ttest',mytheme = newtheme_slope,width = 5,height = 5)
  
 
 

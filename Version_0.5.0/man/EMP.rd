@@ -18,7 +18,6 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 }
 \code{\link{EMP_MICRO}} : Microbial data analysis and visualization.
 \itemize{
-	\item \code{\link{EMP_MICRO}} 
 	\item \code{\link{data_filter}} 
 	\item \code{\link{alpha_plot}}  
  	\item \code{\link{beta_plot}}

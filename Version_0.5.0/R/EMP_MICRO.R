@@ -39,7 +39,9 @@ cat('
   try(dir.create(alpha_dir_pic,recursive = T),silent = T)
   try(dir.create(alpha_dir_html,recursive = T),silent = T)
   try(dir.create(alpha_dir_data,recursive = T),silent = T)
-  
+  if (method != 'ttest') {
+    try(dir.create(alpha_dir_test,recursive = T),silent = T)
+  }
   alpha_result <- alpha_plot(dir = dir,data = data,seed = seed,min_relative = min_relative,min_ratio=min_ratio,
                              method = method,design = design,pattern = pattern,html_out = T,output = F,group_level=group_level)
   level_name <- names(alpha_result$plot)
@@ -52,7 +54,6 @@ cat('
     print(alpha_result$result$alpha_result[[k]])
     sink()
     if (method != 'ttest') {
-    dir.create(alpha_dir_test,recursive = T)
     sink(paste0(alpha_dir_test,'/',k,'_Post-Hoc.txt'))
     print(alpha_result$plot[[k]]$test)
     sink()

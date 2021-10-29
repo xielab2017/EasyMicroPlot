@@ -39,9 +39,6 @@ cat('
   try(dir.create(alpha_dir_pic,recursive = T),silent = T)
   try(dir.create(alpha_dir_html,recursive = T),silent = T)
   try(dir.create(alpha_dir_data,recursive = T),silent = T)
-  if (method != 'ttest') {
-    try( dir.create(alpha_dir_test,recursive = T),silent = T)
-  }
   
   alpha_result <- alpha_plot(dir = dir,data = data,seed = seed,min_relative = min_relative,min_ratio=min_ratio,
                              method = method,design = design,pattern = pattern,html_out = T,output = F,group_level=group_level)
@@ -54,9 +51,12 @@ cat('
     sink(paste0(alpha_dir_data,'/',k,'_alpha_value.txt'))
     print(alpha_result$result$alpha_result[[k]])
     sink()
-    try(sink(paste0(alpha_dir_test,'/',k,'_Post-Hoc.txt')),silent = T)
-    try(print(alpha_result$plot[[k]]$test),silent = T)
-    try(sink(),silent = T)
+    if (method != 'ttest') {
+    dir.create(alpha_dir_test,recursive = T)
+    sink(paste0(alpha_dir_test,'/',k,'_Post-Hoc.txt'))
+    print(alpha_result$plot[[k]]$test)
+    sink()
+    }
     # core data deposit
     write.table(file=paste0(core_data_dic_name,'/',k,'_',min_relative,'_',min_ratio*100,'%.txt'),alpha_result$result$filter_data[[k]],sep = '\t',quote = F,row.names = F)
     write.table(file=paste0(core_data_dic_name,'/',k,'_',min_relative,'_',min_ratio*100,'%_info.txt'),alpha_result$result$filter_data[[paste0(k,'_ID')]],sep = '\t',quote = F,row.names = F) 
@@ -102,18 +102,18 @@ beta_check<-tryCatch({
     
     beta_result <- beta_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
                              design = design,adjust = T,pattern = pattern,group_level=group_level,
-                             html_out = T,output=F,seed = seed,method = method,distance = i)
+                             html_out = T,output=F,seed = seed,method = beta_method,distance = i)
     level_name <- names(beta_result$plot)
     for (j in level_name) {
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p12.pdf'),beta_result$plot[[j]]$pic$p12,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p1-2.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p1-2.html'), beta_dir_html))
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p23.pdf'),beta_result$plot[[j]]$pic$p23,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p2-3.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p2-3.html'), beta_dir_html))
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p13.pdf'),beta_result$plot[[j]]$pic$p13,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p1-3.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p1-3.html'), beta_dir_html))
       sink(paste0(beta_dir_test,'/',j,'_Post-Hoc.txt'))
       print(beta_result$plot[[j]]$test)
       sink()
@@ -251,7 +251,7 @@ RFCV_check<-tryCatch({
   
   
   
-  core_sp <- data_filter(dir = '.',data = data,min_relative = min_relative,min_ratio=min_ratio,
+  core_sp <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio=min_ratio,
                              design = design,pattern = pattern,output = F)
   sp <- core_sp$filter_data[[RFCV_estimate]]
   write.table(file = paste0(RFCV_dir_tax,'/taxonomy_id.txt'),core_sp$filter_data$species_ID,row.names = F,sep = '\t')

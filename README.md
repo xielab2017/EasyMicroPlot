@@ -15,6 +15,8 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 	if(! require("devtools")) install.packages("devtools")
 	library(devtools)
 	install_github("xielab2017/EasyMicroPlot",subdir='Version_0.5.0')
+	# When something is wrong, please try this below
+	install_github("xielab2017/EasyMicroPlot",subdir='Version_0.5.0',upgrade = 'never')
 
 
 				

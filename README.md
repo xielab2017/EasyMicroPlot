@@ -86,7 +86,7 @@ EMP_MICRO()
 More feature and tutorial is below :  
 https://github.com/xielab2017/EasyMicroPlot/wiki
 
-## PUBLICATION LIST BASED ON EMP PACKAGES
+## PUBLICATION LIST BASED ON EMP PACKAGE
 1. (2021) Susu Zhang #, Peili Wu #, Ye Tian#, Bingdong Liu#, Liujing Huang , Zhihong Liu, Nie Lin , Ningning Xu, Yuting Ruan, Zhen Zhang, Ming Wang, Zongbing Cui, HongWei Zhou, Liwei Xie, Hong Chen, Jia SunGut Microbiota Serves a Predictable Outcome of Short-Term Low-Carbohydrate Diet (LCD) Intervention for Patients with Obesity. ***Microbiol. Spectr.***
 
 2. (2021) Liujing Huang#, Bingdong Liu#, Zhihong Liu, Wanqin Feng, Minjuan Liu, Yifeng Wang, Dongxian Peng, Xiafei Fu, Honglei Zhu, Zongbin Cui, Liwei Xie ,Ying Ma Gut Microbiota Exceeds Cervical Microbiota for Early Diagnosis of Endometriosis. ***Frontiers Cellular and Infection Microbiology***

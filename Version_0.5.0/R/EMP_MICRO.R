@@ -255,7 +255,7 @@ RFCV_check<-tryCatch({
   core_sp <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio=min_ratio,
                              design = design,pattern = pattern,output = F)
   sp <- core_sp$filter_data[[RFCV_estimate]]
-  write.table(file = paste0(RFCV_dir_tax,'/taxonomy_id.txt'),core_sp$filter_data$species_ID,row.names = F,sep = '\t')
+  write.table(file = paste0(RFCV_dir_tax,'/taxonomy_id.txt'),core_sp$filter_data[[paste0(RFCV_estimate,'_ID')]],row.names = F,sep = '\t')
   sp$Group <- factor(sp$Group)
   rf <- RFCV(sp,each_ouput = T,ntree=ntree,kfold=kfold,rep=rep,RF_importance=RF_importance,step=step,cutoff_colour=cutoff_colour)
   suppressMessages(filesstrings::file.move(list.files(path ='.' ,pattern = 'varimplot.pdf'),RFCV_dir_importance))

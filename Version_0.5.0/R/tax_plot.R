@@ -134,10 +134,19 @@ tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   return(deposit)
 }
 
-tax_plot <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,html_out=F,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot <- function(data,tax_select=NULL,group_level=c('default'),width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,html_out=F,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                                                                                                                           "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   deposit <- list()
   mtest_pool=c('HSD','LSD','duncan','scheffe','REGW','SNK')
+  name_group=unique(data$Group)
+  group_level_check=all(name_group%in%group_level)&all(group_level%in%name_group)
+  if (group_level_check==T) {
+    data$Group<-factor(data$Group,levels = group_level)
+  }else{
+    if (group_level[1] != 'default') {
+      warning('group level can not match, and pipe will follow the default level !')
+    }
+  }
   if (method %in% mtest_pool){
     deposit <- tax_plot_mtest(data=data,tax_select=tax_select,width_total=width_total,height_total=height_total,width=width,height=height,seed=seed,row_panel=row_panel,method=method,mytheme=mytheme,palette=palette)
   }else if(method == 'ttest'){

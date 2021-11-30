@@ -23,6 +23,9 @@ Filtering data and making alpha diversity plot.
   \item{width,height}{Set the width and height of interactive html. [Default:10]}
   \item{method}{Set method in multiple comparison: HSD(Default),ttest,LSD,duncan,scheffe,REGW,SNK.}
   \item{mytheme}{Support ggplot theme parameters.}
+  \item{change}{Modify empty taxonomy name.eg d__Bacteria;__;__ will change into d__Bacteria;p__Other;c__Other [Default:False]}
+  \item{change_name}{Decide the change name when parameter change is True. [Default:Other]}
+
 
 }
 \examples{

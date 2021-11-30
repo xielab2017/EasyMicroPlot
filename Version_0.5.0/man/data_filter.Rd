@@ -17,6 +17,9 @@ Filtering data at different condition.
   \item{adjust}{Set addtional dummy tax in empty data when filtering. [Default:False]}
   \item{pattern}{Set key string character for relative abundance files.}
   \item{output}{Output filter data at different levels. [Default:False]}
+  \item{change}{Modify empty taxonomy name.eg d__Bacteria;__;__ will change into d__Bacteria;p__Other;c__Other [Default:False]}
+  \item{change_name}{Decide the change name when parameter change is True. [Default:Other]}
+
 }
 \examples{
 ## Load data

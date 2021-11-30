@@ -12,11 +12,11 @@
 #' @importFrom igraph layout_in_circle
 
 
-cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio = 0,pattern='L',cooc_method='spearman',cooc_p=0.05,cooc_r=0.3,vertex.size=NULL,vertex.label.cex=NULL,edge.width=2,edge_color_positive='darkred',edge_color_negitive='steelblue',output = F,cooc_output = F,cooc_output_dir = NULL,width=10,height=10,set_color_level='phylum'){
+cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio = 0,pattern='',cooc_method='spearman',cooc_p=0.05,cooc_r=0.3,vertex.size=NULL,vertex.label.cex=NULL,edge.width=2,edge_color_positive='darkred',edge_color_negitive='steelblue',output = F,cooc_output = F,cooc_output_dir = NULL,width=10,height=10,set_color_level='phylum',change=F,change_name='Other'){
   deposit=list()
   # 注意这里adjust必须为关闭
   mapping <- design
-  filter_result <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,design = design,adjust = F,pattern = pattern,output = output)
+  filter_result <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,design = design,adjust = F,pattern = pattern,output = output,change=change,change_name=change_name)
   deposit$result <- filter_result
   # 提取总色板和注释
   tax_profile_total <- cooc_color_set(filter_result)
@@ -34,7 +34,7 @@ cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio =
     # 调整输入数据
     mapping_sub <- mapping[mapping$Group==Group_name,]
     input_list <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
-                              design = mapping_sub,adjust = F,pattern = pattern,output = F)
+                              design = mapping_sub,adjust = F,pattern = pattern,output = F,change=change,change_name=change_name)
     
     input_file <- grep("ID$",names(input_list$filter_data),value=T,invert=T)
     for (k in input_file){

@@ -23,6 +23,9 @@ Filtering data and making structure plot for Top abundance.
   \item{width,height}{Set the width and height of plot.[Default:10]}
   \item{structure_method}{Set select method in top abundance tax: mean(Default),median,max,min.}
   \item{estimate_group}{To choose groups in consideration for top abundance selection.}
+  \item{change}{Modify empty taxonomy name.eg d__Bacteria;__;__ will change into d__Bacteria;p__Other;c__Other [Default:False]}
+  \item{change_name}{Decide the change name when parameter change is True. [Default:Other]}
+
 }
 \examples{
 ## Load data

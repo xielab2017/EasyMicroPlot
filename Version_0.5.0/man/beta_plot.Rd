@@ -26,6 +26,9 @@ Filtering data and making beta diversity plot.
   \item{width,height}{Set the width and height of interactive html. [Default:15]}
   \item{method}{Set method in multiple comparison: HSD(Default),LSD,duncan,scheffe,REGW,SNK.}
   \item{distance}{bray(Default),manhattan, euclidean, canberra, clark, kulczynski, jaccard, gower, altGower, morisita, horn, mountford, raup, binomial, chao, cao or mahalanobis.}
+  \item{change}{Modify empty taxonomy name.eg d__Bacteria;__;__ will change into d__Bacteria;p__Other;c__Other [Default:False]}
+  \item{change_name}{Decide the change name when parameter change is True. [Default:Other]}
+
 }
 \examples{
 ## Load data

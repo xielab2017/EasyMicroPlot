@@ -70,7 +70,7 @@ modify_data=function(data,design, min_relative,min_odd) {
 }
 
 
-data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,output=F,pattern='L'){
+data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,change=F,change_name='Other',output=F,pattern='L'){
   deposit <- list()
   mapping <- design
   # 消除mapping原有的因子等级，特别是sub_mapping的
@@ -79,7 +79,7 @@ data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,o
   try(mapping<-read.table(paste0(design),header = T,check.names = F,sep = "\t",stringsAsFactors = F),silent = T)
   mapping <- subset(mapping,select = c(SampleID,Group))
 
-  raw_data <- data_input(dir=dir,data=data,pattern=pattern)
+  raw_data <- data_input(dir=dir,data=data,pattern=pattern,change=change,change_name=change_name)
 
   for (tax_level in names(raw_data)){
     data <- raw_data[[tax_level]]
@@ -144,7 +144,7 @@ data_filter=function(dir=NULL,data=NULL,min_relative,min_ratio,design,adjust=F,o
   return(deposit)
 }
 
-data_input=function(dir='.',data = NULL,pattern=''){
+data_input=function(dir='.',data = NULL,pattern='',change=F,change_name='Other'){
   deposit <- list()
   sep_num <- c()
   tax_total <- c('phylum','class','order','family','genus','species')
@@ -152,22 +152,8 @@ data_input=function(dir='.',data = NULL,pattern=''){
     file_name<-list.files(path =dir ,pattern = pattern)
     file_num <- length(file_name)
     for (i in c(1:file_num)){
-      file_data <- read.table(paste0(dir,'/',file_name[i]),sep='\t',header=T,check.names = F,row.names= 1)
-      sep_num[i] <- stringr::str_count(rownames(file_data)[1],pattern = ';')
-    }
-    if (length(unique(sep_num))<file_num) {
-      message('Data level can not match well, plz check files in different microbial level!')
-      message('Duplicated level detcted!')
-    }else{
-    for (i in c(1:file_num)){
-      tax_level <- tax_total[sep_num[i]]
-      deposit[[tax_level]] <- read.table(paste0(dir,'/',file_name[i]), sep="\t", header=T,check.names = F)
-    }
-   }
-  }else if (inherits(data, "list")) {
-    file_num <- length(data)
-    for (i in c(1:file_num)){
-      file_data <- data[[i]]
+      file_data <- data_format_check(paste0(dir,'/',file_name[i]),change = change,change_name = change_name)
+      file_data <- file_data$relative
       sep_num[i] <- stringr::str_count(file_data[1,1],pattern = ';')
     }
     if (length(unique(sep_num))<file_num) {
@@ -176,18 +162,147 @@ data_input=function(dir='.',data = NULL,pattern=''){
     }else{
       for (i in c(1:file_num)){
         tax_level <- tax_total[sep_num[i]]
-        deposit[[tax_level]]=data[[i]]
+        file_data <- data_format_check(paste0(dir,'/',file_name[i]),change = change,change_name = change_name)
+        file_data <- file_data$relative
+        deposit[[tax_level]] <- file_data
+      }
+    }
+  }else if (inherits(data, "list")) {
+    file_num <- length(data)
+    for (i in c(1:file_num)){
+      file_data <- data_format_check(file = data[[i]],change = change,change_name = change_name)
+      file_data <- file_data$relative
+      sep_num[i] <- stringr::str_count(file_data[1,1],pattern = ';')
+    }
+    if (length(unique(sep_num))<file_num) {
+      message('Data level can not match well, plz check files in different microbial level!')
+      message('Duplicated level detcted!')
+    }else{
+      for (i in c(1:file_num)){
+        tax_level <- tax_total[sep_num[i]]
+        file_data <- data_format_check(file = data[[i]],change = change,change_name = change_name)
+        file_data <- file_data$relative
+        deposit[[tax_level]]=file_data
       }
     }
   }else if (inherits(data, "data.frame")){
-    file_data <- data
+    file_data <- data_format_check(file = data,change = change,change_name = change_name)
+    file_data <- file_data$relative
     sep_num <- stringr::str_count(file_data[1,1],pattern = ';')
     if (!sep_num%in%c(1:6)) {
       message('Data level can not match well, plz check files in different microbial level!')
     }else{
       tax_level=tax_total[sep_num]
-      deposit[[tax_level]]=data
+      deposit[[tax_level]]=file_data
     }
   }
   return(deposit)
 }  
+
+
+data_format_check <- function(file,change=F,change_name='Other'){
+  deposit <- list()
+  # read the data
+  if (is.character(file)) {
+    if (stringr::str_detect(file,pattern='.csv')) {
+      data <- read.csv(file,header = T,stringsAsFactors = F)
+    }else if (stringr::str_detect(file,pattern='.txt')) {
+      data <- read.table(file,header = T,sep = '\t',stringsAsFactors = F)
+    }
+  }else if(inherits(file, "data.frame")){
+    data <- file
+  }
+  
+  # check the file format 
+  format_qiime2 <- stringr::str_detect(colnames(data)[2],pattern='[Bacteria,Archaea]')
+  if (format_qiime2) {
+    format_ab  <- sum(data[1,-1])>1
+  }else{
+    format_ab <- sum(data[,2])>1
+  }
+  
+  # cacaulation
+  if (format_qiime2) {
+    colnames(data) <- gsub("[.]p__", ";p__", colnames(data))
+    colnames(data) <- gsub("[.]c__", ";c__", colnames(data))
+    colnames(data) <- gsub("[.]o__", ";o__", colnames(data))
+    colnames(data) <- gsub("[.]f__", ";f__", colnames(data))
+    colnames(data) <- gsub("[.]g__", ";g__", colnames(data))
+    colnames(data) <- gsub("[.]s__", ";s__", colnames(data))
+    colnames(data) <- gsub("[.]__", ";__", colnames(data))
+    colnames(data) <- gsub("[.]Other", ";Other", colnames(data))
+    
+    rownames(data) <- data[,1]
+    data <- data[,-1]
+    
+    data_f <- as.data.frame(t(data))
+    if (change==T) {
+      level_num <- stringr::str_count(rownames(data_f)[2],pattern = ';')+1
+      pattern <- c('[k,d,Unassigned]__','p__','c__','o__','f__','g__','s__')[1:level_num]
+      pattern <- c('[k__,d__,Unassigned]','p__','c__','o__','f__','g__','s__')[1:level_num]
+      new_ID <- c()
+      for (raw_name in rownames(data_f)) {
+        level_check <- c()
+        for (j in pattern) {
+          level_check <- append(level_check,stringr::str_detect(raw_name, j))
+        }
+        check_num <- sum(rep(1,level_num)[!level_check])
+        if (check_num != 0) {
+          missing_level <- paste0(';',paste0(rep('__',check_num),collapse = ';'))
+          pattern_correct <- paste0(';',paste0(tail(pattern,check_num),change_name,collapse = ';'))
+          new_ID <- append(new_ID,gsub(missing_level,pattern_correct,raw_name))
+        }else{
+          new_ID <- append(new_ID,raw_name)
+        }
+      }
+      rownames(data_f) <-new_ID
+    }
+    
+    data_new <- data.frame(ID=rownames(data_f),data_f)
+    rownames(data_new) <- 1:nrow(data_new)  
+    if (format_ab) {
+      data_f_relab <- as.data.frame(apply(data_f, 2, function(m){m/sum(m)}))
+      data_relab <- data.frame(ID=rownames(data_f_relab),data_f_relab)
+      rownames(data_relab) <- 1:nrow(data_relab)
+      deposit$relative <- data_relab
+      deposit$absolute <-  data_new
+    }else{deposit$relative <-  data_new}
+    return(deposit)
+  }else{
+    data_f <- data
+    rownames(data_f) <- data_f[,1]
+    data_f <- data_f[,-1]
+    if (change==T) {
+      level_num <- stringr::str_count(rownames(data_f)[1],pattern = ';')+1
+      pattern <- c('[k,d]__','p__','c__','o__','f__','g__','s__')[1:level_num]
+      new_ID <- c()
+      for (raw_name in rownames(data_f)) {
+        level_check <- c()
+        for (j in pattern) {
+          level_check <- append(level_check,stringr::str_detect(raw_name, j))
+        }
+        check_num <- sum(rep(1,level_num)[!level_check])
+        if (check_num != 0) {
+          missing_level <- paste0(';',paste0(rep('__',check_num),collapse = ';'))
+          pattern_correct <- paste0(';',paste0(tail(pattern,check_num),change_name,collapse = ';'))
+          new_ID <- append(new_ID,gsub(missing_level,pattern_correct,raw_name))
+        }else{
+          new_ID <- append(new_ID,raw_name)
+        }
+      }
+      rownames(data_f) <-new_ID
+    }
+    data_new <- data.frame(ID=rownames(data_f),data_f)
+    rownames(data_new) <- 1:nrow(data_new)  
+    if (format_ab) {
+      data_f_relab <- as.data.frame(apply(data_f, 2, function(m){m/sum(m)}))
+      data_relab <- data.frame(ID=rownames(data_f_relab),data_f_relab)
+      rownames(data_relab) <- 1:nrow(data_relab)
+      deposit$relative <- data_relab
+      deposit$absolute <-  data_new
+    }else{
+      deposit$relative <- data_new
+    }
+  }
+  return(deposit)  
+}

@@ -108,12 +108,12 @@ structure_top_bar <- function(data,group_level='default',tax_level='default',myt
 } 
 
 
-structure_plot <- function(data = NULL,design,dir = NULL,group_level='default',tax_level='default',measure='default',mytheme=theme(),min_relative = 0,min_ratio = 0 ,pattern = '',output = F,
+structure_plot <- function(data = NULL,design,dir = NULL,group_level='default',tax_level='default',measure='default',mytheme=theme(),min_relative = 0,min_ratio = 0 ,pattern = '',output = F,change=F,change_name='Other',
                            structure_method='mean',num = 10,estimate_group='default',width=10,height=10,row_panel=NULL,
                            palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF","#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   
   deposit=list()
-  deposit$result=data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,design = design,adjust = F,pattern = pattern,output = output)
+  deposit$result=data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,design = design,adjust = F,pattern = pattern,output = output,change=change,change_name=change_name)
   # 提取输入文件数据，注意排除ID文件
   input_file=grep("ID$",names(deposit$result$filter_data),value=T,invert=T)
   for (i in input_file){

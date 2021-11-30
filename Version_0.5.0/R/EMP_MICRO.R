@@ -1,6 +1,7 @@
-EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,row_panel=NULL,html_out=T,method='LSD',beta_method='LSD',distance=c('bray','jaccard'),seed=123,pattern='L',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
-                      height=10,RFCV_estimate='species',vertex.size=15,vertex.label.cex=0.5,set_color_level='phylum',ntree=1000,kfold=5,rep=10,RF_importance=1,step=1,cutoff_colour='red',
-                      output_folder='Result/'){
+EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,row_panel=NULL,html_out=T,method='LSD',beta_method='LSD',distance=c('bray','jaccard'),seed=123,pattern='',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
+                      height=10,RFCV_estimate='species',x_break=1,vertex.size=15,vertex.label.cex=0.5,set_color_level='phylum',ntree=1000,kfold=5,rep=10,RF_importance=1,step=1,cutoff_colour='red',change=F,change_name='Other',tax_level='default',edge_color_positive='darkred',edge_color_negitive='steelblue',edge.width=2,
+                      output_folder='Result/',palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+                                        "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
 
 
 cat('
@@ -11,6 +12,7 @@ cat('
 'Working space :',getwd(),'\n',
 'Output folder :',output_folder,'\n',
 'File searching pattern :',pattern,'\n',
+'Group order for plots :',group_level,'\n',
 'Width :',width,'\tHeight :',height,'\n',
 'Min relative :',min_relative,'\tMin ratio :',min_ratio,'\n',
 'Multiple comparisons :',method,'\n',
@@ -18,6 +20,8 @@ cat('
 'Distance for beta diversity :',distance,'\n',
 'Top abundance in structure plot:',top_num,'\n',
 'Min correlation index :', cooc_r,'\tP value for correlation :',cooc_p,'\n',
+'Positive edge :', edge_color_positive,'\tNegitive edge :',edge_color_negitive,'\n',
+'Vertex size :', vertex.size,'\tVertex color :',set_color_level ,'\tLabel size in vertex :',vertex.label.cex,'\n',
 'Random numbers :',seed,'\tTaxonomy for RFCV :',RFCV_estimate,'\n'
 ) 
 
@@ -42,8 +46,8 @@ cat('
   if (method != 'ttest') {
     try(dir.create(alpha_dir_test,recursive = T),silent = T)
   }
-  alpha_result <- alpha_plot(dir = dir,data = data,seed = seed,min_relative = min_relative,min_ratio=min_ratio,
-                             method = method,design = design,pattern = pattern,html_out = T,output = F,group_level=group_level)
+  alpha_result <- alpha_plot(dir = dir,data = data,seed = seed,min_relative = min_relative,min_ratio=min_ratio,palette=palette,
+                             method = method,design = design,pattern = pattern,html_out = html_out,output = F,group_level=group_level,change=change,change_name=change_name)
   level_name <- names(alpha_result$plot)
   alpha_index <- names(alpha_result$result$alpha_result[[1]])
   for (k in level_name) {
@@ -102,8 +106,8 @@ beta_check<-tryCatch({
     try(dir.create(beta_dir_test,recursive = T),silent = T)
     
     beta_result <- beta_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
-                             design = design,adjust = T,pattern = pattern,group_level=group_level,
-                             html_out = T,output=F,seed = seed,method = beta_method,distance = i)
+                             design = design,adjust = T,pattern = pattern,group_level=group_level,change=change,change_name=change_name,
+                             html_out = html_out,output=F,seed = seed,method = beta_method,distance = i,palette=palette)
     level_name <- names(beta_result$plot)
     for (j in level_name) {
       set.seed(seed)
@@ -154,8 +158,8 @@ cat('
   try(dir.create(str_dir_pic,recursive = T),silent = T)
   try(dir.create(str_dir_info,recursive = T),silent = T)
   try(dir.create(str_dir_top,recursive = T),silent = T)
-  barplot_result <- structure_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
-                                   design = design,num = top_num,pattern = pattern,
+  barplot_result <- structure_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,tax_level=tax_level,
+                                   design = design,num = top_num,pattern = pattern,change=change,change_name=change_name,palette=palette,
                                    output = F,group_level=group_level)
   level_name <- names(barplot_result$pic)
   for (k in level_name) {
@@ -188,9 +192,9 @@ cat('
 --------------------------------------------\n\n')  
 cooc_check<-tryCatch({   
   ### 共发生网络图
-  cooc_result=cooc_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
-                        cooc_output = T,design = design,pattern = pattern,cooc_r = cooc_r,cooc_p =cooc_p,
-                        vertex.size = vertex.size,vertex.label.cex = vertex.label.cex,set_color_level = 'phylum',cooc_output_dir=output_folder)
+  cooc_result=cooc_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,edge.width=edge.width,width=width,height=height,
+                        cooc_output = T,design = design,pattern = pattern,cooc_r = cooc_r,cooc_p =cooc_p,edge_color_positive=edge_color_positive,edge_color_negitive=edge_color_negitive,
+                        vertex.size = vertex.size,vertex.label.cex = vertex.label.cex,set_color_level = set_color_level,change=change,change_name=change_name,cooc_output_dir=output_folder)
   cooc_dir_info <- paste0(output_folder,'/cooc_result/cooc_info')
   cooc_dir_net_profile <- paste0(output_folder,'/cooc_result/net_profile')
   
@@ -257,7 +261,7 @@ RFCV_check<-tryCatch({
   sp <- core_sp$filter_data[[RFCV_estimate]]
   write.table(file = paste0(RFCV_dir_tax,'/taxonomy_id.txt'),core_sp$filter_data[[paste0(RFCV_estimate,'_ID')]],row.names = F,sep = '\t')
   sp$Group <- factor(sp$Group)
-  rf <- RFCV(sp,each_ouput = T,ntree=ntree,kfold=kfold,rep=rep,RF_importance=RF_importance,step=step,cutoff_colour=cutoff_colour)
+  rf <- RFCV(sp,each_ouput = T,ntree=ntree,kfold=kfold,rep=rep,RF_importance=RF_importance,step=step,cutoff_colour=cutoff_colour,seed_start=seed,x_break=x_break,palette=palette)
   suppressMessages(filesstrings::file.move(list.files(path ='.' ,pattern = 'varimplot.pdf'),RFCV_dir_importance))
 
 
@@ -267,8 +271,8 @@ RFCV_check<-tryCatch({
   write.table(RF_var_dataframe,file = paste0(RFCV_dir_model,"/RF_accuracy.txt"),row.names = F,sep = '\t',quote=F)
 
   ggplot2::ggsave(paste0(RFCV_dir_model,'/RFCV_curve.pdf'),rf$RFCV_result_plot$curve_plot,width = 2*height,height = height)
-  try(taxa_intersect <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$intersect_num ,method=method,html_out = F),silent = T)
-  taxa_union <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$union_num ,method=method,html_out = T)
+  try(taxa_intersect <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$intersect_num ,method=method,html_out = F,group_level=group_level),silent = T)
+  taxa_union <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$union_num ,method=method,html_out = T,group_level=group_level)
   suppressMessages(filesstrings::file.move(list.files(path ='.' ,pattern = 'boxplot.html'),RFCV_dir_html))
   if (!is.null(taxa_union$Post_Hoc)) {
     dir.create(RFCV_dir_test,recursive = T)

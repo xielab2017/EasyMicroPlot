@@ -20,11 +20,14 @@ Filtering data and making co-occurrence plot.
   \item{vertex.label.cex}{Vertex label size.}
   \item{edge.width}{Edge width. [Default:2]}
   \item{edge_color_positive}{Edge colour for positive relation. [Default:darkred]}
-  \item{edge_color_negitive}{Edge colour for positive relation. [Default:steelblue]}
+  \item{edge_color_negitive}{Edge colour for negitive relation. [Default:steelblue]}
   \item{output}{Output filter data at different levels. [Default:False]} 
   \item{cooc_output}{Output cooc plot. [Default:False]}
   \item{set_color_level}{Set colour for vertex.(phylum,class,order,family,genus,species)[Default:phylum]}
   \item{width,height}{Set the width and height of plot. [Default:10]}
+  \item{change}{Modify empty taxonomy name.eg d__Bacteria;__;__ will change into d__Bacteria;p__Other;c__Other [Default:False]}
+  \item{change_name}{Decide the change name when parameter change is True. [Default:Other]}
+
 }
 \examples{
 ## Load data

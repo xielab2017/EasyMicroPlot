@@ -74,67 +74,59 @@ Regroup for meta data.
   The table below summarizes indices implemented in meta_regroup and the criteria used to select the optimal number of clusters. \cr 
 
 \tabular{ll}{
-      \bold{Index in NbClust}         \tab      \bold{Optimal number of clusters} \cr 
+      \bold{Index in EMP}         \tab      \bold{Optimal number of clusters} \cr 
       
-1.  "kl" or "all" or "alllong"        \tab Maximum value of the index \cr
+1.  "kl"         \tab Maximum value of the index \cr
     (Krzanowski and Lai 1988)         \cr
-2.  "ch" or "all" or "alllong"        \tab Maximum value of the index \cr
+2.  "ch"         \tab Maximum value of the index \cr
     (Calinski and Harabasz 1974)      \cr
-3.  "hartigan" or "all" or "alllong"  \tab Maximum difference between \cr
+3.  "hartigan"   \tab Maximum difference between \cr
      (Hartigan 1975)                  \tab hierarchy levels of the index \cr
-4.  "ccc" or "all" or "alllong"       \tab Maximum value of the index \cr
+4.  "ccc"        \tab Maximum value of the index \cr
     (Sarle 1983)                                                      \cr 
-5.  "scott" or "all" or "alllong"     \tab Maximum difference between \cr
+5.  "scott"      \tab Maximum difference between \cr
     (Scott and Symons 1971)           \tab   hierarchy levels of the index \cr
-6.  "marriot" or "all" or "alllong"   \tab Max. value of second differences\cr
+6.  "marriot"    \tab Max. value of second differences\cr
     (Marriot 1971)                    \tab  between levels of the index \cr
-7.  "trcovw" or "all" or "alllong"    \tab Maximum difference between \cr
+7.  "trcovw"     \tab Maximum difference between \cr
     (Milligan and Cooper 1985)        \tab hierarchy levels of the index \cr                            
-8.  "tracew" or "all" or "alllong"    \tab Maximum value of absolute second \cr
+8.  "tracew"     \tab Maximum value of absolute second \cr
     (Milligan and Cooper 1985)        \tab differences between levels of the index\cr
-9.  "friedman" or "all" or "alllong"  \tab Maximum difference between \cr
+9.  "friedman"   \tab Maximum difference between \cr
     (Friedman and Rubin 1967)         \tab hierarchy levels of the index \cr
-10.  "rubin" or "all" or "alllong"    \tab Minimum value of second differences \cr  
+10.  "rubin"     \tab Minimum value of second differences \cr  
     (Friedman and Rubin 1967)         \tab        between levels of the index \cr
-11. "cindex" or "all" or "alllong"    \tab Minimum value of the index \cr
+11. "cindex"     \tab Minimum value of the index \cr
     (Hubert and Levin 1976)                                           \cr   
-12.  "db" or "all" or "alllong"       \tab Minimum value of the index \cr
+12.  "db"        \tab Minimum value of the index \cr
      (Davies and Bouldin 1979)                                        \cr    
-13.   "silhouette" or "all" or "alllong" \tab Maximum value of the index \cr
+13.   "silhouette"  \tab Maximum value of the index \cr
     (Rousseeuw 1987)                                                    \cr  
-14. "duda" or "all" or "alllong"      \tab Smallest \eqn{n_{c}} such that index > criticalValue \cr
+14. "duda"       \tab Smallest \eqn{n_{c}} such that index > criticalValue \cr
     (Duda and Hart 1973)                                                 \cr    
-15. "pseudot2" or "all" or "alllong"  \tab Smallest \eqn{n_{c}} such that index < criticalValue \cr
+15. "pseudot2"   \tab Smallest \eqn{n_{c}} such that index < criticalValue \cr
     (Duda and Hart 1973)                                                   \cr 
-16. "beale" or "all" or "alllong"      \tab \eqn{n_{c}} such that critical value of the index >= alpha \cr
+16. "beale"       \tab \eqn{n_{c}} such that critical value of the index >= alpha \cr
     (Beale 1969)                                                           \cr  
-17. "ratkowsky" or "all" or "alllong" \tab Maximum value of the index \cr
+17. "ratkowsky"  \tab Maximum value of the index \cr
     (Ratkowsky and Lance 1978)                                          \cr 
-18. "ball" or "all" or "alllong"      \tab Maximum difference between hierarchy \cr
+18. "ball"       \tab Maximum difference between hierarchy \cr
     (Ball and Hall 1965)              \tab  levels of the index \cr
-19. "ptbiserial" or "all" or "alllong" \tab Maximum value of the index \cr
+19. "ptbiserial"  \tab Maximum value of the index \cr
     (Milligan 1980, 1981)                                              \cr 
-20. "gap" or "alllong"                 \tab Smallest \eqn{n_{c}} such that criticalValue >= 0 \cr
-    (Tibshirani et al. 2001)                                                                  \cr   
-21.  "frey" or "all" or "alllong"   \tab the cluster level before that index value < 1.00 \cr
+20.  "frey"    \tab the cluster level before that index value < 1.00 \cr
      (Frey and Van Groenewoud 1972)                                                       \cr
-22. "mcclain" or "all" or "alllong"\tab Minimum value of the index \cr
+21. "mcclain" \tab Minimum value of the index \cr
     (McClain and Rao 1975)  \cr
-23. "gamma" or "alllong" \tab Maximum value of the index \cr
-    (Baker and Hubert 1975)     \cr
-24. "gplus" or "alllong"\tab Minimum value of the index \cr
-    (Rohlf 1974) (Milligan 1981)  \cr
-25. "tau" or "alllong" \tab Maximum value of the index \cr
-    (Rohlf 1974) (Milligan 1981)  \cr
-26. "dunn" or "all" or "alllong" \tab Maximum value of the index \cr
+22. "dunn"  \tab Maximum value of the index \cr
     (Dunn 1974)       \cr
-27. "hubert" or "all" or "alllong" \tab Graphical method \cr
+23. "hubert"  \tab Graphical method \cr
     (Hubert and Arabie 1985)  \cr
-28. "sdindex" or "all" or "alllong" \tab Minimum value of the index \cr
+24. "sdindex"  \tab Minimum value of the index \cr
     (Halkidi et al. 2000)   \cr
-29. "dindex" or "all" or "alllong" \tab Graphical method\cr
+25. "dindex"  \tab Graphical method\cr
     (Lebart et al. 2000)    \cr
-30. "sdbw" or "all" or "alllong" \tab Minimum value of the index \cr
+26. "sdbw"  \tab Minimum value of the index \cr
     (Halkidi and Vazirgiannis 2001) \cr
 }% tabular
   

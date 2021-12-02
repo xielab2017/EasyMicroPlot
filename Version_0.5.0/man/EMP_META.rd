@@ -22,6 +22,10 @@ Summary and regroup function for meta data.
   \item{clust_dis}{Set method in distance:euclidean,maximum,manhattan,canberra,binary,minkowski. [Default:euclidean]}
   \item{silent}{logical: should the report of result messages be suppressed?. [Default:False]}
 }
+
+\details{
+More detailed information in \code{\link{meta_summary}} and \code{\link{meta_regroup}}
+}
 \examples{
 ## Load data
  library(EasyMicroPlot)
@@ -55,3 +59,6 @@ re <- EMP_META(data = meta_data,estimate_group = 'MetS',missing_plot = F,new_col
  new_group <- re$regroup$regroup_data                
 
 }
+
+
+

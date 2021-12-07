@@ -271,8 +271,13 @@ RFCV_check<-tryCatch({
   write.table(RF_var_dataframe,file = paste0(RFCV_dir_model,"/RF_accuracy.txt"),row.names = F,sep = '\t',quote=F)
 
   ggplot2::ggsave(paste0(RFCV_dir_model,'/RFCV_curve.pdf'),rf$RFCV_result_plot$curve_plot,width = 2*height,height = height)
-  try(taxa_intersect <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$intersect_num ,method=method,html_out = F,group_level=group_level),silent = T)
-  taxa_union <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$union_num ,method=method,html_out = T,group_level=group_level)
+  
+  # 考虑到用户的组名有时过长，这里默认使用斜45度主题
+  library(ggplot2)
+  newtheme_slope=theme(axis.text.x =element_text(angle = 45, hjust = 1,size = 10))
+
+  try(taxa_intersect <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$intersect_num ,method=method,html_out = F,group_level=group_level,mytheme =newtheme_slope),silent = T)
+  taxa_union <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$union_num ,method=method,html_out = T,group_level=group_level,mytheme =newtheme_slope)
   suppressMessages(filesstrings::file.move(list.files(path ='.' ,pattern = 'boxplot.html'),RFCV_dir_html))
   if (!is.null(taxa_union$Post_Hoc)) {
     dir.create(RFCV_dir_test,recursive = T)
@@ -281,9 +286,13 @@ RFCV_check<-tryCatch({
     sink()
   }
   
+  # 这里考虑过多分组，导致用户出图展示不佳，进一步调整
+  if(length(unique(sp$Group)) > 4){
+    width_rfcv_adjust = 2*width
+  }
   # 这里关闭警告提示，防止用户交集为空，导致总控停顿报错在这里
-  suppressWarnings(try(ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_intersect.pdf'),taxa_intersect$pic$total,width = width,height = height),silent = T))
-  ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_union.pdf'),taxa_union$pic$total,width = width,height = height)
+  suppressWarnings(try(ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_intersect.pdf'),taxa_intersect$pic$total,width = width_rfcv_adjust,height = height),silent = T))
+  ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_union.pdf'),taxa_union$pic$total,width = width_rfcv_adjust,height = height)
   
   if (  length(unique(sp$Group)) == 2  ) {
     pdf(paste0(RFCV_dir_name,'ROC_intersecet.pdf'))

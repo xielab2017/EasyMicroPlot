@@ -13,7 +13,6 @@ Microbial data analysis.
   \item{dir}{An directory contain microbial relative abundance at different levels.}
   \item{min_relative}{et the min relative abundance for filtering.[Default:0.001]}
   \item{min_ratio}{Set the min ratio presence for taxonomy.[Default:0.7]}
-  \item{row_panel}{Pannel array.[Default:NULL]}
   \item{html_out}{Output interactive html.[Default:True]}
   \item{pattern}{Set key string character for relative abundance files.[Default:L]}
   \item{width}{width for plot.[Default:15]}

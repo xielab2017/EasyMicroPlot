@@ -1,41 +1,45 @@
-tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
-          "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
+tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+                            "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   if (!is.null(tax_select)) {
     data <- data[,c('SampleID','Group',tax_select)]
   }
   deposit <- list()
   # 获得比较组
-  group_name=as.character(unique(data$Group))
-  group_combn=combn(group_name,2)
-  compare=plyr::alply(group_combn,2)
+  group_name <- as.character(unique(data$Group))
+  group_combn <- combn(group_name,2)
+  compare <- plyr::alply(group_combn,2)
   
   # 获得特征名字
-  feature_name=colnames(data)[!colnames(data)%in%c('SampleID','Group')]
-  
+  feature_name <- colnames(data)[!colnames(data)%in%c('SampleID','Group')]
   # 绘图
   ## 分图
   for (i in feature_name) {
-    p1 <- eval(substitute(ggplot(data=data,aes(x=Group,y=data[,i] ))+geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA)+
-      ylab(i)+ggpubr::stat_compare_means(comparisons = compare,method="t.test")+scale_fill_manual(values=palette)+
-      ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw() + mytheme, list( i =i)))
+    compare_id <- c()
+    for (m in compare) {
+      compare_check <- c()
+      sp_data_check <- data[data$Group%in%m,][,c('Group',i)]
+      compare_check <- tryCatch(t.test(sp_data_check[paste(i)][sp_data_check$Group == m[1],], sp_data_check[paste(i)][sp_data_check$Group == m[2],])$p.value)
+      if (is.na(compare_check)) {
+        compare_value <- F
+      }else if (!is.na(compare_check)) {
+        compare_value <- T
+      }
+      compare_id <- append(compare_id,compare_value)
+    }
+    compare_determin <- compare[compare_id]
+    p1 <- eval(substitute(ggplot2::ggplot(data=data,aes(x=Group,y=data[,i] ))+geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA)+
+                            ylab(i)+ggpubr::stat_compare_means(comparisons = compare_determin,method="t.test")+scale_fill_manual(values=palette)+
+                            ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw(), list( i =i)))
     # 注意html生成时应基于随机种子
-    set.seed(seed)
+    set.seed(123)
     p1_html <- ggiraph::girafe(code = print(p1),width = width,height = height)
     deposit$pic[[i]] <- p1
     deposit$html[[i]] <- p1_html
   }
-  ## 总图
-  options(warn=-1)
-  data_combie = reshape2::melt(data,id.vars = c('SampleID','Group'))
-  options(warn=1)
-  p_total <- ggplot(data_combie, aes(x=Group,y=value ,fill = Group)) +
-    geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA) +
-    facet_wrap(~variable, scales = 'free_y', ncol = row_panel) +
-    ggpubr::stat_compare_means(comparisons = compare,method="t.test")+
-    scale_fill_manual(values =palette) +
-    labs(x = '', y = 'Relative abundance')+ 
-    ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw() + mytheme
   
+  ## 总图
+  p_total <- ggpubr::ggarrange(plotlist = deposit$pic, ncol = NULL,common.legend=T,widths =width_total,
+                               heights = height_total,legend = 'right')
   set.seed(seed)
   p_total_html <- ggiraph::girafe(code = print(p_total),width = width_total,height = height_total)
   deposit$pic$total <- p_total
@@ -43,7 +47,7 @@ tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   return(deposit)
 }
 
-tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,width=10,height=8,seed=123,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
           "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   if (!is.null(tax_select)) {
   data <- data[,c('SampleID','Group',tax_select)]
@@ -134,7 +138,7 @@ tax_plot_mtest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
   return(deposit)
 }
 
-tax_plot <- function(data,tax_select=NULL,group_level=c('default'),width_total=20,height_total=20,width=10,height=8,seed=123,row_panel=NULL,html_out=F,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+tax_plot <- function(data,tax_select=NULL,group_level=c('default'),width_total=20,height_total=20,width=10,height=8,seed=123,html_out=F,method='HSD',mytheme=theme(),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                                                                                                                           "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   deposit <- list()
   mtest_pool=c('HSD','LSD','duncan','scheffe','REGW','SNK')
@@ -148,9 +152,9 @@ tax_plot <- function(data,tax_select=NULL,group_level=c('default'),width_total=2
     }
   }
   if (method %in% mtest_pool){
-    deposit <- tax_plot_mtest(data=data,tax_select=tax_select,width_total=width_total,height_total=height_total,width=width,height=height,seed=seed,row_panel=row_panel,method=method,mytheme=mytheme,palette=palette)
+    deposit <- tax_plot_mtest(data=data,tax_select=tax_select,width_total=width_total,height_total=height_total,width=width,height=height,seed=seed,method=method,mytheme=mytheme,palette=palette)
   }else if(method == 'ttest'){
-    deposit <- tax_plot_ttest(data=data,tax_select=tax_select,width_total=width_total,height_total=height_total,width=width,height=height,seed=seed,row_panel=row_panel,mytheme=mytheme,palette=palette)
+    deposit <- tax_plot_ttest(data=data,tax_select=tax_select,width_total=width_total,height_total=height_total,width=width,height=height,seed=seed,mytheme=mytheme,palette=palette)
   }else{
     warning('Plz select one of these method : HSD, LSD, duncan, scheffe, REGW, SNK, ttest')
   }

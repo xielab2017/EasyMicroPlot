@@ -1,4 +1,4 @@
-EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,row_panel=NULL,html_out=T,method='LSD',beta_method='LSD',distance=c('bray','jaccard'),seed=123,pattern='',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
+EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,html_out=T,method='LSD',beta_method='LSD',distance=c('bray','jaccard'),seed=123,pattern='',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
                       height=10,RFCV_estimate='species',x_break=1,vertex.size=15,vertex.label.cex=0.5,set_color_level='phylum',ntree=1000,kfold=5,rep=10,RF_importance=1,step=1,cutoff_colour='red',change=F,change_name='Other',tax_level='default',edge_color_positive='darkred',edge_color_negitive='steelblue',edge.width=2,
                       output_folder='Result/',palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                         "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
@@ -288,11 +288,11 @@ RFCV_check<-tryCatch({
   
   # 这里考虑过多分组，导致用户出图展示不佳，进一步调整
   if(length(unique(sp$Group)) > 4){
-    width_rfcv_adjust = 2*width
+    width = 2*width
   }
   # 这里关闭警告提示，防止用户交集为空，导致总控停顿报错在这里
-  suppressWarnings(try(ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_intersect.pdf'),taxa_intersect$pic$total,width = width_rfcv_adjust,height = height),silent = T))
-  ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_union.pdf'),taxa_union$pic$total,width = width_rfcv_adjust,height = height)
+  suppressWarnings(try(ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_intersect.pdf'),taxa_intersect$pic$total,width = width,height = height),silent = T))
+  ggplot2::ggsave(paste0(RFCV_dir_pic,'/RFCV_union.pdf'),taxa_union$pic$total,width = width,height = height)
   
   if (  length(unique(sp$Group)) == 2  ) {
     pdf(paste0(RFCV_dir_name,'ROC_intersecet.pdf'))

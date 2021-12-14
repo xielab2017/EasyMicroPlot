@@ -273,7 +273,7 @@ RFCV_check<-tryCatch({
   ggplot2::ggsave(paste0(RFCV_dir_model,'/RFCV_curve.pdf'),rf$RFCV_result_plot$curve_plot,width = 2*height,height = height)
   
   # 考虑到用户的组名有时过长，这里默认使用斜45度主题
-  library(ggplot2)
+  suppressWarnings(library(ggplot2))
   newtheme_slope=theme(axis.text.x =element_text(angle = 45, hjust = 1,size = 10))
 
   try(taxa_intersect <- tax_plot(data = sp,tax_select =rf$RFCV_result_plot$intersect_num ,method=method,html_out = F,group_level=group_level,mytheme =newtheme_slope),silent = T)

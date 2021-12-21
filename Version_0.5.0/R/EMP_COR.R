@@ -37,6 +37,8 @@ cor_plot_heat <-function(data,meta_data,method = 'spearman',width=10,height=10,c
   real_sample <- intersect(meta_data$SampleID,data$SampleID)
   data <- data[data$SampleID%in%real_sample, ]
   meta_data <- meta_data[meta_data$SampleID%in%real_sample, ]
+  data=data[order(data$SampleID),]
+  meta_data=meta_data[order(meta_data$SampleID),]
   try(data <- subset(data,select = -c(Group)), silent = T)
   data.corr <- psych::corr.test(data[,-1], meta_data[,-1],method = method,adjust='none')
   data.r <- data.corr$r

@@ -16,6 +16,7 @@ Filtering data and making structure plot for Top abundance.
   \item{min_ratio}{Set the min ratio presence for taxonomy. [Default:0]}
   \item{num}{Top number of abundance.[Default:10]}
   \item{design}{Mapping File.}
+  \item{measure}{Decide the taxa by which samples will be sorted.}
   \item{row_panel}{pannel array. [Default:NULL]}
   \item{pattern}{Set key string character for relative abundance files.}
   \item{palette}{Colour palette.}

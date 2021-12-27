@@ -216,9 +216,9 @@ data_format_check <- function(file,change=F,change_name='Other'){
   # check the file format 
   format_qiime2 <- stringr::str_detect(colnames(data)[3],pattern='Archaea')|stringr::str_detect(colnames(data)[3],pattern='Bacteria')|stringr::str_detect(colnames(data)[3],pattern='Eukaryota')|stringr::str_detect(colnames(data)[3],pattern='Unassigned')
   if (format_qiime2) {
-    format_ab  <- sum(data[1,-1])>1
+    format_ab  <- round(sum(data[1,-1]),10) >1
   }else{
-    format_ab <- sum(data[,2])>1
+    format_ab <- round(sum(data[,2]),10) >1 # 这里必须round一下，不然会出现判定始终为True，可能是由极小值未正常显示
   }
   
   # cacaulation

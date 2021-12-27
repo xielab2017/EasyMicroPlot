@@ -12,7 +12,7 @@
 #' @importFrom igraph layout_in_circle
 
 
-cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio = 0,pattern='',cooc_method='spearman',cooc_p=0.05,cooc_r=0.3,vertex.size=NULL,vertex.label.cex=NULL,edge.width=2,edge_color_positive='darkred',edge_color_negitive='steelblue',output = F,cooc_output = F,cooc_output_dir = NULL,width=10,height=10,set_color_level='phylum',change=F,change_name='Other'){
+cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL,min_relative = 0,min_ratio = 0,pattern='',cooc_method='spearman',cooc_p=0.05,cooc_r=0.3,vertex.size=NULL,vertex.label.cex=NULL,edge.width=2,edge.curved = F,edge_color_positive='darkred',edge_color_negitive='steelblue',meta_col = 'white',clust=F,seed=123,output = F,cooc_output = F,cooc_output_dir = NULL,width=10,height=10,heatmap_width = 5,heatmap_height = NULL,set_color_level='phylum',change=F,change_name='Other'){
   deposit=list()
   # 注意这里adjust必须为关闭
   mapping <- design
@@ -24,15 +24,25 @@ cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio =
   try(mapping <- subset(mapping,select = c(SampleID,Group)),silent=T)
   if (cooc_output == T ) {
     if (is.null(cooc_output_dir)){
-      destination_folder <- paste0('cooc_result/pic')
+      destination_folder_pic <- paste0('cooc_result/network/')
+      destination_folder_vertex <- paste0('cooc_result/vertex/')
     }else{
-      destination_folder <- paste0(cooc_output_dir,'/cooc_result/pic')
+      destination_folder_pic <- paste0(cooc_output_dir,'/cooc_result/network/')
+      destination_folder_vertex <- paste0(cooc_output_dir,'/cooc_result/vertex/')
     }
-    dir.create(destination_folder,recursive = T)
+    dir.create(destination_folder_pic,recursive = T)
+    dir.create(destination_folder_vertex,recursive = T)
   }
   for (Group_name in unique(mapping$Group)) {
     # 调整输入数据
-    mapping_sub <- mapping[mapping$Group==Group_name,]
+    if (group_combie == T) {
+      mapping_sub <- mapping
+      Group_name <- 'Total'
+    }else{
+      mapping_sub <- mapping[mapping$Group==Group_name,]
+    }
+    
+    
     input_list <- data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
                               design = mapping_sub,adjust = F,pattern = pattern,output = F,change=change,change_name=change_name)
     
@@ -43,9 +53,12 @@ cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio =
       input_data <- input_list$filter_data[[k]]
       
       igraph_data <- subset(input_data,select = -c(Group))
+      if (!is.null(meta)) {
+        meta_feature_num=ncol(meta)-1
+        igraph_data <- dplyr::inner_join(igraph_data,meta,by='SampleID')
+      }
       rownames(igraph_data)<-igraph_data$SampleID
       igraph_data <- subset(igraph_data,select = -c(SampleID))
-      
       occor  <- psych::corr.test(as.matrix(igraph_data),use="pairwise",method=cooc_method,adjust='none',alpha=.05)
       occor.r <- occor$r
       occor.p <- occor$p
@@ -64,22 +77,67 @@ cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio =
       node <- igraph::get.vertex.attribute(igraph)$name
       
       
-      tax_color_sub_set <- tax_profile_total[[k]]$tax_color[[k]]
+      #tax_color_sub_set <- tax_profile_total[[k]]$tax_color[[k]]
       tax_profile_sub <- tax_profile_total[[k]]$tax_data[tax_profile_total[[k]]$tax_data$ID %in% node,]
-      
+
+      # 将数据与igraph节点排序一致，便于染色
+      tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node[1:c(length(node)-meta_feature_num)])
+      tax_profile_sub=tax_profile_sub[order(tax_profile_sub$ID),]
+
       # 设定各节点颜色
       each_color <- c()
       for (cc in tax_profile_sub[,set_color_level]) {
         each_color_temp <- as.character(color_ref$color[color_ref$tax %in% cc])
         each_color <- append(each_color,each_color_temp)
       }
+      # meta 数据采用white进行填充
+      each_color=append(each_color,rep(meta_col,length(node)-length(each_color)))
       igraph::V(igraph)$color <- as.character(each_color)
+      
       
       # 创建共同legend
       color_legend <-color_ref[color_ref$tax%in% unique(tax_profile_sub[,set_color_level]),] 
+      if (!is.null(meta)) {
+        color_legend <- as.data.frame(rbind(as.matrix(color_legend),c('Meta_data',meta_col)))
+      }
       
+      
+      
+      # 计算节点重要性
+      page_rank_value=as.data.frame(igraph::page_rank(igraph)$vector,row.names = NULL)
+      colnames(page_rank_value)='page_rank_value'
+      page_rank_value['vertex']=rownames(page_rank_value)
+      
+      
+      evcent_value=as.data.frame(igraph::evcent(igraph,scale = T)$vector)
+      colnames(evcent_value)='evcent_value'
+      evcent_value['vertex']=rownames(evcent_value)
+      
+      
+      betweenness_value=as.data.frame(igraph::betweenness(igraph,normalized = T))
+      colnames(betweenness_value)='betweenness_value'
+      betweenness_value['vertex']=rownames(betweenness_value)
+      
+      vetex_importance <- dplyr::full_join(evcent_value,betweenness_value,by='vertex')
+      vetex_importance <- dplyr::full_join(vetex_importance,page_rank_value,by='vertex')
+      
+      
+      row.names(vetex_importance)=vetex_importance$vertex
+      vetex_importance=subset(vetex_importance,select = -c(vertex))
+      
+      heatmap_palette<- c("#303596", "white","#a8002d") 
+      heatmap <- pheatmap::pheatmap(vetex_importance,scale ='column', cluster_cols=F,border_color='black',width = heatmap_width,height = heatmap_height,
+                                    cluster_rows=T,color = colorRampPalette(heatmap_palette)(1000),silent = T)
+      
+      # 数据存储
       deposit$plot[[Group_name]][[k]]$igraph <- igraph
       deposit$plot[[Group_name]][[k]]$color_legend <- color_legend
+      deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_color <- each_color
+      deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_importance_value <- vetex_importance
+      deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_importance_plot <- heatmap
+      deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color_positive <- edge_color_positive
+      deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color_negitive <- edge_color_negitive
+      deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color <- igraph::E(igraph)$color
       deposit$plot[[Group_name]][[k]]$info <- c(Group_name,k)
       deposit$plot[[Group_name]][[k]]$cor_result$cor_r <- occor.r
       deposit$plot[[Group_name]][[k]]$cor_result$cor_p <- occor.p
@@ -88,18 +146,45 @@ cooc_plot <- function(data = NULL,design,dir = NULL,min_relative = 0,min_ratio =
         pdf(paste0(Group_name,'_',k,'.pdf'),width = width,height = height)
         par(mar = c(5, 0, 4, 10) + 0.1)
         sub_title=paste0(k,' level')
-        igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
-                            edge.lty=1,edge.curved=F,margin=c(0,0,0,0),edge.curved=F,layout=igraph::layout_in_circle,vertex.label.color="black")
+        if (clust == T) {
+          fc = igraph::cluster_fast_greedy(igraph,weights =NULL)
+          member.num<-length(table(igraph::membership(fc)))
+          member.list<-list()
+          for(i in 1:member.num){
+            member.list<-c(member.list, list(fc$member==i))
+          }
+          deposit$plot[[Group_name]][[k]]$cor_result$fc_clust <- igraph::membership(fc)
+          set.seed(seed)
+          igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                              edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),layout=igraph::layout.fruchterman.reingold,mark.groups=member.list,mark.border = 'black',vertex.label.color="black")
+        }else if (clust == F){
+          igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                              edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),layout=igraph::layout_in_circle,vertex.label.color="black")
+        }else{
+          warning('Paramter clust should be True or False !')
+        }
         legend(1.1,1,legend = color_legend$tax,text.col=as.character(color_legend$color),cex = 0.8)
         dev.off() 
-        fs::file_move(paste0(Group_name,'_',k,'.pdf'),destination_folder)
+        fs::file_move(paste0(Group_name,'_',k,'.pdf'),destination_folder_pic)
+        
+        #  输出节点重要性属性值
+        vetex_importance_output <- data.frame(vetex=row.names(vetex_importance),evcent_value=vetex_importance$evcent_value,
+                                              betweenness_value=vetex_importance$betweenness_value,page_rank_value=vetex_importance$page_rank_value)
+        write.table(vetex_importance_output,file = paste0(destination_folder_vertex,Group_name,'_',k,'_vetex_importance.txt'),quote = F,sep = '\t',row.names = F)
+        save_pheatmap_pdf(heatmap,filename = paste0(destination_folder_vertex,Group_name,'_',k,'_vetex_importance.pdf'),width = heatmap_width ,height = heatmap_height)
       }
+    }
+    if (group_combie == T) {
+      break
     }
   }
   cooc_profile <- cooc_info(deposit)
   deposit$cooc_profile <- cooc_profile
   return(deposit)
 }
+
+
+
 
 
 
@@ -157,21 +242,71 @@ cooc_info <- function(data){
 }
 
 
-cooc_plot_each <- function(data,vertex.size=NULL,vertex.label.cex=NULL,edge.width=2,cooc_output=F,width = 10,height = 10){
+cooc_plot_each <- function(data,vertex.size=NULL,meta_col = NULL,edge_color_positive = NULL,edge_color_negitive = NULL,vertex.label.cex=NULL,edge.width=2,edge.curved = F,cooc_output=F,width = 10,height = 10,clust = F,seed =123){
   igraph <- data$igraph
   Group_name <- data$info[1]
   color_legend <- data$color_legend
+  vertex_color <- data$vertex_attribute$vertex_color
+  edge_color <- data$edge_attribute$edge_color
+  if (!is.null(meta_col)) {
+    vertex_color=gsub(as.character(color_legend$color[color_legend$tax %in%'Meta_data']),meta_col ,vertex_color)
+    igraph::V(igraph)$color <- as.character(vertex_color)
+    
+    color_legend$color=as.character(color_legend$color)
+    color_legend$color[color_legend$tax %in%'Meta_data'] <- meta_col
+  }
+  
+  if (!is.null(edge_color_positive)) {
+    edge_color=gsub(as.character(data$edge_attribute$edge_color_positive), edge_color_positive, edge_color)
+    igraph::E(igraph)$color <- as.character(edge_color)
+  } 
+
+  if (!is.null(edge_color_negitive)) {
+    edge_color=gsub(as.character(data$edge_attribute$edge_color_negitive), edge_color_negitive, edge_color)
+    igraph::E(igraph)$color <- as.character(edge_color)
+  }  
+ 
   sub_title=paste0(data$info[2],' level')
   
-  igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
-                      edge.lty=1,edge.curved=F,margin=c(0,0,0,0),edge.curved=F,layout=igraph::layout_in_circle,vertex.label.color="black")
+  if (clust == T) {
+    fc = igraph::cluster_fast_greedy(igraph,weights =NULL)
+    member.num<-length(table(igraph::membership(fc)))
+    member.list<-list()
+    for(i in 1:member.num){
+      member.list<-c(member.list, list(fc$member==i))
+    }
+    #deposit$plot[[Group_name]][[k]]$cor_result$fc_clust <- igraph::membership(fc)
+    set.seed(seed)
+    igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                        edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),layout=igraph::layout.fruchterman.reingold,mark.groups=member.list,mark.border = 'black',vertex.label.color="black")
+  }else if (clust == F){
+    igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                        edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),layout=igraph::layout_in_circle,vertex.label.color="black")
+  }else{
+    warning('Paramter clust should be True or False !')
+  }
   legend(1.1,1,legend = color_legend$tax,text.col=as.character(color_legend$color),cex = 0.8)
   
   if (cooc_output ==T ) {
     pdf(paste0(Group_name,'_',data$info[2],'.pdf'),width = width,height = height)
     par(mar = c(5, 0, 4, 10) + 0.1)
-    igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
-                        edge.lty=1,edge.curved=F,margin=c(0,0,0,0),edge.curved=F,layout=igraph::layout_in_circle,vertex.label.color="black")
+    if (clust == T) {
+      fc = igraph::cluster_fast_greedy(igraph,weights =NULL)
+      member.num<-length(table(igraph::membership(fc)))
+      member.list<-list()
+      for(i in 1:member.num){
+        member.list<-c(member.list, list(fc$member==i))
+      }
+      #deposit$plot[[Group_name]][[k]]$cor_result$fc_clust <- igraph::membership(fc)
+      set.seed(seed)
+      igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                          edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),edge.curved=T,layout=igraph::layout.fruchterman.reingold,mark.groups=member.list,mark.border = 'black',vertex.label.color="black")
+    }else if (clust == F){
+      igraph::plot.igraph(igraph,main=paste0("Group_",Group_name,"_Co-occurrence_network.pdf"),sub=sub_title,vertex.size=vertex.size,vertex.label.cex=vertex.label.cex,edge.width=edge.width,
+                          edge.lty=1,edge.curved=edge.curved,margin=c(0,0,0,0),edge.curved=edge.curved,layout=igraph::layout_in_circle,vertex.label.color="black")
+    }else{
+      warning('Paramter clust should be True or False !')
+    }
     legend(1.1,1,legend = color_legend$tax,text.col=as.character(color_legend$color),cex = 0.8)
     invisible(dev.off())
   }
@@ -194,5 +329,28 @@ cooc_info_each <- function(data){
 
 
 
+## 下面为 pheatmp的必须修改，否则在调取图形时会出现覆盖
+
+#' @method grid.draw pheatmap
+#' @export
+grid.draw.pheatmap <- function(x, recording = TRUE) {
+  grid::grid.newpage()
+  grid::grid.draw(x$gtable)
+}
+
+#' @method print pheatmap
+#' @export
+print.pheatmap <- function(x, ...) {
+  grid::grid.draw(x)
+}
+
+save_pheatmap_pdf <- function(x, filename, width=NULL, height=NULL) {
+  stopifnot(!missing(x))
+  stopifnot(!missing(filename))
+  pdf(filename, width=width, height=height)
+  grid::grid.newpage()
+  grid::grid.draw(x$gtable)
+  invisible(dev.off())
+}
 
 

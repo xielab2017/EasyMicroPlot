@@ -16,7 +16,7 @@ Correlation analysis between microbial data and meta information.
   \item{palette}{Colour palette.}
   \item{seed}{Set the random seed to generate reproducible result. [Default:123]}
   \item{width}{width for html. [Default:15]}
-  \item{height}{height for html. [Default:15}
+  \item{height}{height for html. [Default:15]}
 }
 \examples{
 ## Load data

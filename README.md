@@ -42,9 +42,12 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 * table1 (>= 1.4.2)
 * pROC (>= 1.17.0.1)
 * orrplot (>= 0.84)
-* pheatmap (>= 1.0.12)
 * igraph (>= 1.2.6)
 * filesstrings (>= 3.2.1)
+* grid (>= 3.6.3)
+* ggrepel (>= 0.9.1)
+* RColorBrewer(>= 1.1-2)
+* scales(>= 1.1.1)
 
 
 ## AMAZING FEATURE

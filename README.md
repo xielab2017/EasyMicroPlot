@@ -90,6 +90,12 @@ EMP_MICRO()
 More feature and tutorial is below :  
 https://github.com/xielab2017/EasyMicroPlot/wiki
 
+## HOW TO CITE
+If you use EMP in published research, please cite this article:
+
+[**Liu, B., Huang, L., Liu, Z., Pan, X., Cui, Z., and Pan, J. (2022). EasyMicroPlot : An Ef fi cient and Convenient R Package in Microbiome Downstream Analysis and Visualization for Clinical Study. 12, 1–10. doi:10.3389/fgene.2021.803627.**](https://www.frontiersin.org/articles/10.3389/fgene.2021.803627/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field=&journalName=Frontiers_in_Genetics&id=803627)
+
+
 ## PUBLICATION LIST BASED ON EMP PACKAGE
 1. (2021) Susu Zhang #, Peili Wu #, Ye Tian#, Bingdong Liu#, Liujing Huang , Zhihong Liu, Nie Lin , Ningning Xu, Yuting Ruan, Zhen Zhang, Ming Wang, Zongbing Cui, HongWei Zhou, Liwei Xie, Hong Chen, Jia SunGut Microbiota Serves a Predictable Outcome of Short-Term Low-Carbohydrate Diet (LCD) Intervention for Patients with Obesity. ***Microbiol. Spectr.***
 

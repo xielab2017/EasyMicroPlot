@@ -1,5 +1,4 @@
 #' @importFrom corrplot corrplot
-#' @importFrom pheatmap pheatmap
 
 
 
@@ -53,10 +52,10 @@ cor_plot_heat <-function(data,meta_data,method = 'spearman',width=10,height=10,c
   data.p_f2 <- data.p_f[,min_p2<0.05]
   
   sig.mat <- matrix(sapply(data.p_f2, getSig), nrow=nrow(data.p_f2))
-  pheatmap::pheatmap(data.r_f2, clustering_method="average", cluster_rows=F, display_numbers=sig.mat)
+  pheatmap(data.r_f2, clustering_method="average", cluster_rows=F, display_numbers=sig.mat)
   
   if (cor_output==T) {
-    pheatmap::pheatmap(data.r_f2, clustering_method="average", cluster_rows=F, display_numbers=sig.mat,filename=paste0(file_name,'.pdf'),width=width,height=height)
+    pheatmap(data.r_f2, clustering_method="average", cluster_rows=F, display_numbers=sig.mat,filename=paste0(file_name,'.pdf'),width=width,height=height)
     dev.off()
     }
   deposit$r <- data.r

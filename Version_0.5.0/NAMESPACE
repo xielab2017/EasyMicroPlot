@@ -6,6 +6,7 @@ importFrom(vegan,estimateR)
 importFrom(ape,pcoa)
 import(ggplot2)
 import(grid)
+import(gtable)
 importFrom(plyr,create_progress_bar)
 importFrom(dplyr,inner_join)
 importFrom(dplyr,full_join)
@@ -38,6 +39,13 @@ importFrom(table1,table1)
 importFrom(VIM,aggr)
 importFrom(pROC,roc)
 importFrom(corrplot,corrplot)
-importFrom(pheatmap,pheatmap)
 S3method(grid.draw,pheatmap)
 S3method(print,pheatmap)
+import(RColorBrewer)
+import(grDevices)
+import(scales)
+import(stats)
+
+
+
+

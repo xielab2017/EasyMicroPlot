@@ -31,6 +31,7 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 \code{\link{EMP_COR}} : Correlation analysis and visualization between meta and microbial data.
 \itemize{
 	\item \code{\link{EMP_COR}}  
+	\item \code{\link{EMP_COR_RDA}}
 }
 }
 

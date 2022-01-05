@@ -79,11 +79,15 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       
       #tax_color_sub_set <- tax_profile_total[[k]]$tax_color[[k]]
       tax_profile_sub <- tax_profile_total[[k]]$tax_data[tax_profile_total[[k]]$tax_data$ID %in% node,]
-
+      
       # 将数据与igraph节点排序一致，便于染色
-      tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node[1:c(length(node)-meta_feature_num)])
+      if (!is.null(meta)) {
+        tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node[1:c(length(node)-meta_feature_num)])
+      }else{
+        tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node)
+      }
       tax_profile_sub=tax_profile_sub[order(tax_profile_sub$ID),]
-
+      
       # 设定各节点颜色
       each_color <- c()
       for (cc in tax_profile_sub[,set_color_level]) {
@@ -126,15 +130,19 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       vetex_importance=subset(vetex_importance,select = -c(vertex))
       
       heatmap_palette<- c("#303596", "white","#a8002d") 
-      heatmap <- pheatmap(vetex_importance,scale ='column', cluster_cols=F,border_color='black',width = heatmap_width,height = heatmap_height,
-                                    cluster_rows=T,color = colorRampPalette(heatmap_palette)(1000),silent = T)
+      # 这里需要增加一步检验，防止节点数目过少导致节点重要性无法计算，热图计算报错
+      heatmap <- NULL
+      suppressWarnings(try(heatmap <- pheatmap(vetex_importance,scale ='column', cluster_cols=F,border_color='black',width = 5,height = 10,
+                              cluster_rows=T,color = colorRampPalette(heatmap_palette)(1000),silent = T),silent = T))
       
       # 数据存储
       deposit$plot[[Group_name]][[k]]$igraph <- igraph
       deposit$plot[[Group_name]][[k]]$color_legend <- color_legend
       deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_color <- each_color
       deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_importance_value <- vetex_importance
-      deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_importance_plot <- heatmap
+      if (!is.null(heatmap)) {
+        deposit$plot[[Group_name]][[k]]$vertex_attribute$vertex_importance_plot <- heatmap
+      }
       deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color_positive <- edge_color_positive
       deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color_negitive <- edge_color_negitive
       deposit$plot[[Group_name]][[k]]$edge_attribute$edge_color <- igraph::E(igraph)$color
@@ -182,7 +190,6 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
   deposit$cooc_profile <- cooc_profile
   return(deposit)
 }
-
 
 
 

@@ -16,8 +16,8 @@ Filtering data and making co-occurrence plot.
   \item{design}{Mapping File.}
   \item{group_combie}{Combie the data into cooc analysis regardless of group. [Default:False]}
   \item{cooc_method}{"pearson" , "kendall", or "spearman" [Default:spearman]}
-  \item{cooc_p}{Set pvalue forthreshold for correlation test. [Default:0.3]}
-  \item{cooc_r}{Set relation value forthreshold for correlation test. [Default:0.05]}
+  \item{cooc_p}{Set pvalue forthreshold for correlation test. [Default:0.05]}
+  \item{cooc_r}{Set relation value forthreshold for correlation test. [Default:0.3]}
   \item{vertex.size}{Vertex size.}
   \item{vertex.label.cex}{Vertex label size.}
   \item{edge.width}{Edge width. [Default:2]}
@@ -45,6 +45,11 @@ data(EMP)
  cooc_re <- cooc_plot(data = EMP$micro,design = EMP$mapping,min_relative = 0.001,min_ratio = 0.7,cooc_method = 'spearman',cooc_output = T) 
 ##show attributes of net analysis profile at different levels 
  cooc_re$cooc_profile$species
+
+# Add meta data into cooc analysis
+ cooc_re <- cooc_plot(data = EMP$micro,design = EMP$mapping,meta = EMP$iron,min_relative = 0.001,
+                      min_ratio = 0.7,cooc_method = 'spearman',cooc_output = T) 
+
 
 
 ## When some globe parameters do not works well for specific plot, 

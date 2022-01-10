@@ -1,8 +1,8 @@
 EMP_COR_RDA <- function(data, meta, seed =123,width = 15, height = 15, ellipse = NULL,zoom = c(1,1,1), arrow_col=c('#F0E442','#CC79A7'),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF","#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
   deposit <- list()
   data <- data
-  env <- meta
-  
+  env <- na.omit(meta)
+
   mapping <- subset(data,select = c(SampleID,Group))
   real_samples <- intersect(data$SampleID,env$SampleID)
   data <- data[data$SampleID %in% real_samples,]
@@ -30,7 +30,7 @@ EMP_COR_RDA <- function(data, meta, seed =123,width = 15, height = 15, ellipse =
   #vegan::decorana(data)
   
   ####### 构建模型
-  model <- vegan::rda(data,env[,-3],scale=T)
+  model <- vegan::rda(data,env,scale=T)
   
   
   model_summary <- summary(model)  #查看分析结果
@@ -73,7 +73,7 @@ EMP_COR_RDA <- function(data, meta, seed =123,width = 15, height = 15, ellipse =
   test=vegan::permutest(model,permu=999)
   ######每个单独的环境因子
   set.seed(seed)
-  ef=vegan::envfit(model,env[,-3],permu=999)
+  ef=vegan::envfit(model,env,permu=999)
   
   ### 膨胀系数
   vif_value <- vegan::vif.cca(model)

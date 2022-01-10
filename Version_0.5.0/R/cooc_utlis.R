@@ -54,7 +54,6 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       
       igraph_data <- subset(input_data,select = -c(Group))
       if (!is.null(meta)) {
-        meta_feature_num=ncol(meta)-1
         igraph_data <- dplyr::inner_join(igraph_data,meta,by='SampleID')
       }
       rownames(igraph_data)<-igraph_data$SampleID
@@ -82,6 +81,7 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       
       # 将数据与igraph节点排序一致，便于染色
       if (!is.null(meta)) {
+        meta_feature_num <- as.numeric(table(node %in% colnames(meta))['TRUE'])
         tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node[1:c(length(node)-meta_feature_num)])
       }else{
         tax_profile_sub$ID=factor(tax_profile_sub$ID,levels =node)

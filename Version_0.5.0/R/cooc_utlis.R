@@ -58,7 +58,7 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       }
       rownames(igraph_data)<-igraph_data$SampleID
       igraph_data <- subset(igraph_data,select = -c(SampleID))
-      occor  <- psych::corr.test(as.matrix(igraph_data),use="pairwise",method=cooc_method,adjust='none',alpha=.05)
+      occor  <- psych::corr.test(as.matrix(igraph_data),use="complete",method=cooc_method,adjust='none',alpha=.05)
       occor.r <- occor$r
       occor.p <- occor$p
       occor.r[occor.p>cooc_p|abs(occor.r)<cooc_r] = 0 

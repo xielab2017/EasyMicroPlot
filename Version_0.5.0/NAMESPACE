@@ -45,7 +45,7 @@ import(RColorBrewer)
 import(grDevices)
 import(scales)
 import(stats)
-
-
-
-
+importFrom(ggpmisc,stat_poly_eq)
+importFrom(ggpmisc,stat_poly_line)
+export(Stat)
+export(after_stat)

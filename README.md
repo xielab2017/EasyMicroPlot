@@ -102,4 +102,4 @@ If you use EMP in published research, please cite this article:
 2. (2021) Liujing Huang#, Bingdong Liu#, Zhihong Liu, Wanqin Feng, Minjuan Liu, Yifeng Wang, Dongxian Peng, Xiafei Fu, Honglei Zhu, Zongbin Cui, Liwei Xie ,Ying Ma Gut Microbiota Exceeds Cervical Microbiota for Early Diagnosis of Endometriosis. ***Frontiers Cellular and Infection Microbiology***
 
 3. (2022) Limin Xu*, Bingdong Liu*, Liujing Huang*, Ze Li*, Yanbo Cheng, Ye Tian, Guihua Pan, Huijun
-Li ,Yinlan Xu, Weidong Wu, Zongbin Cui, Liwei Xie Probiotic consortia and their metabolites ameliorate the symptoms of inflammatory bowel diseases in a colitis mouse model. Microbiol. Spectr.
+Li ,Yinlan Xu, Weidong Wu, Zongbin Cui, Liwei Xie Probiotic consortia and their metabolites ameliorate the symptoms of inflammatory bowel diseases in a colitis mouse model. ***Microbiol. Spectr.***

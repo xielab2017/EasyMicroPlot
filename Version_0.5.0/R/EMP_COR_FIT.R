@@ -16,7 +16,7 @@ EMP_COR_FIT <- function(data,meta = NULL,var_select,formula = y~poly(x,1,raw = T
   
   if (group == F) {
     p_fit <- ggplot2::ggplot(data=data,aes(x=data[,var_select[1]],y=data[,var_select[2]]))+ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,'\n','x: ',data[,var_select[1]],'\n','y: ',data[,var_select[2]])),position = position_jitter(height = .00000001))+
-      ggpmisc::stat_poly_line(formula = formula,se=F,colour='red')+
+      ggpmisc::stat_poly_line(formula = formula,se=se,colour='red')+
       theme_bw() +  
       xlab(paste0(var_select[1])) + ylab(paste0(var_select[2])) +
       ggpmisc::stat_poly_eq(formula = formula, 
@@ -32,7 +32,7 @@ EMP_COR_FIT <- function(data,meta = NULL,var_select,formula = y~poly(x,1,raw = T
     
     ymax <- ymax*1.3
     p_fit <- ggplot(data=data,aes(x=data[,var_select[1]],y=data[,var_select[2]],colour = Group))+ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,'\n','x: ',data[,var_select[1]],'\n','y: ',data[,var_select[2]])),position = position_jitter(height = .00000001),size=3)+
-      ggpmisc::stat_poly_line(formula = formula,se=F)+  theme_bw() +  
+      ggpmisc::stat_poly_line(formula = formula,se=se)+  theme_bw() +  
       xlab(paste0(var_select[1])) + ylab(paste0(var_select[2])) +
       ggpmisc::stat_poly_eq(formula = formula, vstep = NULL,
                             aes(label = paste(after_stat(eq.label), "*\", \"*", 

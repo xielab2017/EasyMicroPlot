@@ -14,6 +14,7 @@ Perform statistics measurement for bacteria taxa.
   \item{height_total}{Total plot height. [Default:20]}
   \item{width}{Each plot width. [Default:10]}
   \item{height}{Each plot height. [Default:8]}
+  \item{row_panel}{Pannel array.[Default:NULL]}
   \item{seed}{Random number of seed. [Default:123]}
   \item{group_level}{Set the group order for plots. [Not necessary]}
   \item{method}{Set method in comparison: HSD(default),ttest,LSD,duncan,scheffe,REGW,SNK}

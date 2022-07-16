@@ -56,6 +56,7 @@ cooc_plot <- function(data = NULL,design,dir = NULL,group_combie = F,meta = NULL
       if (!is.null(meta)) {
         igraph_data <- dplyr::inner_join(igraph_data,meta,by='SampleID')
       }
+      igraph_data <- na.omit(igraph_data)
       rownames(igraph_data)<-igraph_data$SampleID
       igraph_data <- subset(igraph_data,select = -c(SampleID))
       occor  <- psych::corr.test(as.matrix(igraph_data),use="complete",method=cooc_method,adjust='none',alpha=.05)

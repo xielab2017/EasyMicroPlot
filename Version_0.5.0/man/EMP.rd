@@ -33,6 +33,7 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 	\item \code{\link{EMP_COR}}  
 	\item \code{\link{EMP_COR_RDA}}
 	\item \code{\link{EMP_COR_FIT}}
+	\item \code{\link{EMP_COR_SANKEY}}
 }
 }
 

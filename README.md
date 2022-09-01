@@ -23,7 +23,13 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 
 ## USAGE and Tutorial
 More feature and tutorial is below :  
+Chinese version
+
 https://xielab2017.github.io/EasyMicroPlot_tutorial/
+
+English version
+
+In the plan
 
 ## HOW TO CITE
 If you use EMP in published research, please cite this article:

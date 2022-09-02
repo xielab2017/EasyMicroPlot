@@ -2,10 +2,15 @@
 
 
 
-cor_plot_detail <-function(data,meta_data,method = 'spearman',width=10,height=10,cor_output=T,file_name='cor_plot'){
+cor_plot_detail <-function(data,meta_data = NULL,method = 'spearman',width=10,height=10,cor_output=T,file_name='cor_plot'){
   deposit <- list()
   try(data <- subset(data,select = -c(Group)), silent = T)
-  cor_data_combie <- dplyr::inner_join(data,meta_data,by='SampleID')
+  if (!is.null(meta_data)) {
+    cor_data_combie <- dplyr::inner_join(data,meta_data,by='SampleID')
+  }else{
+    cor_data_combie=data
+  }
+  
   # 改第一列 为行名，确保实体数据
   rownames(cor_data_combie) = cor_data_combie[,1]
   cor_data_combie=cor_data_combie[,-1]

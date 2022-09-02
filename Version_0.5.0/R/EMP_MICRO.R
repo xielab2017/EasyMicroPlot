@@ -212,7 +212,7 @@ cooc_check<-tryCatch({
       print(cooc_result$plot[[p]][[n]]$cor_result$cor_p)
       sink()
     }
-    sink(paste0(cooc_dir_net_profile,'/',n,'_',p,'_cooc_profie.txt'))
+    sink(paste0(cooc_dir_net_profile,'/',n,'_','cooc_profie.txt'))
     print(cooc_result$cooc_profile[[n]])
     sink()
   }

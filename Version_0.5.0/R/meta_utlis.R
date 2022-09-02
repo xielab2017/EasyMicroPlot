@@ -45,7 +45,7 @@ meta_regroup_sort <- function(data,new_col_id = 'Group',regroup_level,keep_col =
 }
 
 
-meta_summary <- function(data,estimate_group,missing_plot=T,keep_col= 1,width=20,height=20){
+meta_summary <- function(data,estimate_group,missing_plot=T,keep_col= 'SampleID',width=20,height=20){
   deposit <- list()
   if (keep_col == 1) {
     data <- data[,-1]

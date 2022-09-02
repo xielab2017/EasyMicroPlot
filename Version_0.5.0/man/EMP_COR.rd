@@ -10,6 +10,7 @@ Correlation analysis between microbial data and meta information.
 \arguments{
   \item{data}{An dataframe containing microbial relative abundance.}
   \item{meta}{An dataframe containing subject-related data.}
+  \item{aes_value}{A vector giving the subscripts which the function will be applied over.}
   \item{method}{"pearson" , "kendall", or "spearman" [Default:spearman]}
   \item{width}{width.[Default:10]}
   \item{height}{height.[Default:10}

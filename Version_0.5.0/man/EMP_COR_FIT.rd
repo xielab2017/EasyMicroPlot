@@ -13,7 +13,6 @@ Perform polynomial regression for variables.
   \item{formula}{a formula object. Using aesthetic names x and y instead of original variable names. [y~poly(x,1,raw = T)]}
   \item{eq_size}{Equation label size. [Default:3]}
   \item{se}{Display confidence interval around smooth. [Default:False]}
-  \item{height}{Each plot height. [Default:5]}
   \item{group}{Analysis by group. [Default:False]}
   \item{width,height}{Set the width and height of interactive html. [Default:5]}
   \item{palette}{Colour palette.}

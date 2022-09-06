@@ -25,7 +25,7 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 
 Chinese version
 
-https://xielab2017.github.io/EasyMicroPlot_tutorial/
+<u>https://xielab2017.github.io/EasyMicroPlot_tutorial/</u>
 
 English version
 
@@ -34,7 +34,7 @@ In the plan
 ## HOW TO CITE
 If you use EMP in published research, please cite this article:
 	
-<a href="https://www.frontiersin.org/articles/10.3389/fgene.2021.803627/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field=&journalName=Frontiers_in_Genetics&id=803627" target="_blank">**EasyMicroPlot : An Efficient and Convenient R Package in Microbiome Downstream Analysis and Visualization for Clinical Study.**</a>
+**Bingdong Liu**, Liujing Huang, Zhihong Liu, Xiaohan Pan, Zongbing Cui, Jiyang Pan\*,**Liwei Xie\***. EasyMicroPlot : An Efficient and Convenient R Package in Microbiome Downstream Analysis and Visualization for Clinical Study. ***Frontiers in Genetics***. doi: [10.3389/fgene.2021.803627](https://www.frontiersin.org/articles/10.3389/fgene.2021.803627/full)
 
 
 ## PUBLICATION LIST BASED ON EMP PACKAGE

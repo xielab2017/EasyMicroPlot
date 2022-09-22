@@ -28,6 +28,20 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 * English version
 
   In the plan
+  
+## Version update
+* 0.5.1.23
+
+1. Add Student's t-test and ellipse function for beta_plot moudle.
+  
+2. Fix some bugs.
+
+## Next update in plan
+- [ ] Add group parameter for structure_plot
+- [ ] Add Procrustes Analysis 
+- [ ] Add Anosim Analysis
+- [ ] Add more beautiful design for figures
+
 
 ## HOW TO CITE
 If you use EMP in published research, please cite this article:

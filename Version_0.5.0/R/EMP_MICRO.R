@@ -1,4 +1,4 @@
-EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,html_out=T,method='LSD',beta_method='LSD',distance=c('bray','jaccard'),seed=123,pattern='',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
+EMP_MICRO <- function(data=NULL,design='mapping.txt',dir='.',min_relative=0.001,min_ratio=0.7,html_out=T,method='LSD',distance=c('bray','jaccard'),seed=123,pattern='',group_level='default',top_num=10,cooc_r=0.3,cooc_p=0.05,width=10,
                       height=10,RFCV_estimate='species',x_break=1,vertex.size=15,vertex.label.cex=0.5,set_color_level='phylum',ntree=1000,kfold=5,rep=10,RF_importance=1,step=1,cutoff_colour='red',change=F,change_name='Other',tax_level='default',edge_color_positive='darkred',edge_color_negitive='steelblue',edge.width=2,
                       output_folder='Result/',palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                         "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
@@ -16,7 +16,6 @@ cat('
 'Width :',width,'\tHeight :',height,'\n',
 'Min relative :',min_relative,'\tMin ratio :',min_ratio,'\n',
 'Multiple comparisons :',method,'\n',
-'Multiple comparisons for beta diversity :',beta_method,'\n',
 'Distance for beta diversity :',distance,'\n',
 'Top abundance in structure plot:',top_num,'\n',
 'Min correlation index :', cooc_r,'\tP value for correlation :',cooc_p,'\n',
@@ -107,18 +106,18 @@ beta_check<-tryCatch({
     
     beta_result <- beta_plot(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,
                              design = design,adjust = T,pattern = pattern,group_level=group_level,change=change,change_name=change_name,
-                             html_out = html_out,output=F,seed = seed,method = beta_method,distance = i,palette=palette)
+                             html_out = html_out,output=F,seed = seed,method = method,distance = i,palette=palette)
     level_name <- names(beta_result$plot)
     for (j in level_name) {
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p12.pdf'),beta_result$plot[[j]]$pic$p12,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p1-2.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p1-2.html'), beta_dir_html))
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p23.pdf'),beta_result$plot[[j]]$pic$p23,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p2-3.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p2-3.html'), beta_dir_html))
       set.seed(seed)
       ggplot2::ggsave(paste0(beta_dir_pic,'/',j,'_p13.pdf'),beta_result$plot[[j]]$pic$p13,width = 1.5*width,height = 1.5*height)
-      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',beta_method,'_p1-3.html'), beta_dir_html))
+      suppressMessages(filesstrings::file.move(paste0(j,'_',min_relative,'_',min_ratio,'_',i,'_',method,'_p1-3.html'), beta_dir_html))
       sink(paste0(beta_dir_test,'/',j,'_Post-Hoc.txt'))
       print(beta_result$plot[[j]]$test)
       sink()

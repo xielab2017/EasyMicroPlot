@@ -19,9 +19,9 @@
 
 options(dplyr.summarise.inform = FALSE)
 
-pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('HSD'),width=15,height=15,distance=c('bray'),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('LSD'),ellipse = NULL,width=15,height=15,distance=c('bray'),palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                                                                          "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666")){
-  
+  deposit <- list()
   data=data
   mapping=design
   try(mapping<-read.table(paste0(design),header = T),silent = T)
@@ -63,103 +63,175 @@ pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('HSD
   pc3 <-round(pcoa$values$Relative_eig[3]*100,digits = 2)
   #plotdata$Group <- factor(plotdata$Group,levels = name_group)
   
+
+
   #PC1和PC2的显著性检验(PC1,PC2,PC3进行组间差异检验)
-  yf <- plotdata
-  yd1 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC1))
-  yd2 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC2))
-  yd3 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC3))
-  yd1$Max <- yd1$Max + max(yd1$Max)*0.1
-  yd2$Max <- yd2$Max + max(yd2$Max)*0.1
-  yd3$Max <- yd3$Max + max(yd2$Max)*0.1
-  fit1 <- aov(PC1~Group,data = plotdata)    #ANOVA检验≥3组样本
-  fit2 <- aov(PC2~Group,data = plotdata)
-  fit3 <- aov(PC3~Group,data = plotdata)
+  if (method %in%  c('LSD','HSD','duncan','scheffe','REGW','SNK')) {
+    yf <- plotdata
+    yd1 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC1))
+    yd2 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC2))
+    yd3 <- yf %>% dplyr::group_by(Group) %>% dplyr::summarise(Max = max(PC3))
+    yd1$Max <- yd1$Max + max(yd1$Max)*0.1
+    yd2$Max <- yd2$Max + max(yd2$Max)*0.1
+    yd3$Max <- yd3$Max + max(yd2$Max)*0.1
+    fit1 <- aov(PC1~Group,data = plotdata)    #ANOVA检验≥3组样本
+    fit2 <- aov(PC2~Group,data = plotdata)
+    fit3 <- aov(PC3~Group,data = plotdata)
 
-  fit1_test=multi_test(fit1,method,mapping)
-  fit2_test=multi_test(fit2,method,mapping)
-  fit3_test=multi_test(fit3,method,mapping)
-
-
-  a=data.frame(groups=fit1_test$model$groups$groups,Gid=rownames(fit1_test$model$groups))
-  a$Gid=factor(a$Gid,levels = yd1$Group)
-  a=as.data.frame(a[order(a$Gid),])
-
-  b=data.frame(groups=fit2_test$model$groups$groups,Gid=rownames(fit2_test$model$groups))
-  b$Gid=factor(b$Gid,levels = yd1$Group)
-  b=as.data.frame(b[order(b$Gid),])
-
-  c=data.frame(groups=fit3_test$model$groups$groups,Gid=rownames(fit3_test$model$groups))
-  c$Gid=factor(c$Gid,levels = yd1$Group)
-  c=as.data.frame(c[order(c$Gid),])
+    fit1_test=multi_test(fit1,method,mapping)
+    fit2_test=multi_test(fit2,method,mapping)
+    fit3_test=multi_test(fit3,method,mapping)
 
 
-  test <- data.frame(PC1 =a$groups,PC2 = b$groups,PC3 = c$groups,
-                      yd1 = yd1$Max,yd2 = yd2$Max,yd3 = yd3$Max,Group = yd1$Group)
-  rownames(test)=yd1$Group
+    a=data.frame(groups=fit1_test$model$groups$groups,Gid=rownames(fit1_test$model$groups))
+    a$Gid=factor(a$Gid,levels = yd1$Group)
+    a=as.data.frame(a[order(a$Gid),])
 
-  test$Group <- factor(test$Group,levels = name_group)
-  
-  #相须图绘制
-  p1 <- ggplot(plotdata,aes(Group,PC1)) +
-    geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
-    geom_text(data = test,aes(x = Group,y = yd1,label = PC1),
-              size = 7,color = "black",fontface = "bold") +
-    coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC1,2))),position = "jitter")+
-    theme_bw()+
-    theme(axis.ticks.length = unit(0.4,"lines"),
-          axis.ticks = element_line(color='black'),
-          axis.line = element_line(colour = "black"),
-          axis.title.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.y=element_text(colour='black',size=20,face = "bold"),
-          axis.text.x=element_blank(),
-          legend.position = "none")
-  
-  p2 <- ggplot(plotdata,aes(Group,PC2)) +
-    geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
-    geom_text(data = test,aes(x = Group,y = yd2,label = PC2),
-              size = 7,color = "black",fontface = "bold")+ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
-    theme_bw()+
-    theme(axis.ticks.length = unit(0.4,"lines"),
-          axis.ticks = element_line(color='black'),
-          axis.line = element_line(colour = "black"),
-          axis.title.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.x=element_text(colour='black',size=20,angle = 45,
-                                   vjust = 1,hjust = 1,face = "bold"),
-          axis.text.y=element_blank(),
-          legend.position = "none")
-  
-  p2_r <- ggplot(plotdata,aes(Group,PC2)) +
-    geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
-    geom_text(data = test,aes(x = Group,y = yd2,label = PC2),
-              size = 7,color = "black",fontface = "bold")+coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
-    theme_bw()+
-    theme(axis.ticks.length = unit(0.4,"lines"),
-          axis.ticks = element_line(color='black'),
-          axis.line = element_line(colour = "black"),
-          axis.title.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.y=element_text(colour='black',size=20,face = "bold"),
-          axis.text.x=element_blank(),
-          legend.position = "none")
-  
-  
-  
-  p3 <- ggplot(plotdata,aes(Group,PC3)) + scale_fill_manual(values=palette) +
-    geom_boxplot(aes(fill = Group),outlier.colour = NA) +
-    geom_text(data = test,aes(x = Group,y = yd3,label = PC3),
-              size = 7,color = "black",fontface = "bold") +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC3,2))),position = "jitter")+
-    theme_bw()+
-    theme(axis.ticks.length = unit(0.4,"lines"),
-          axis.ticks = element_line(color='black'),
-          axis.line = element_line(colour = "black"),
-          axis.title.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.x=element_text(colour='black',size=20,angle = 45,
-                                   vjust = 1,hjust = 1,face = "bold"),
-          axis.text.y=element_blank(),
-          legend.position = "none")
+    b=data.frame(groups=fit2_test$model$groups$groups,Gid=rownames(fit2_test$model$groups))
+    b$Gid=factor(b$Gid,levels = yd1$Group)
+    b=as.data.frame(b[order(b$Gid),])
+
+    c=data.frame(groups=fit3_test$model$groups$groups,Gid=rownames(fit3_test$model$groups))
+    c$Gid=factor(c$Gid,levels = yd1$Group)
+    c=as.data.frame(c[order(c$Gid),])
+
+
+    test <- data.frame(PC1 =a$groups,PC2 = b$groups,PC3 = c$groups,
+                        yd1 = yd1$Max,yd2 = yd2$Max,yd3 = yd3$Max,Group = yd1$Group)
+    rownames(test)=yd1$Group
+
+    test$Group <- factor(test$Group,levels = name_group)
+    #相须图绘制
+    p1 <- ggplot(plotdata,aes(Group,PC1)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      geom_text(data = test,aes(x = Group,y = yd1,label = PC1),
+                size = 7,color = "black",fontface = "bold") +
+      coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC1,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.y=element_text(colour='black',size=20,face = "bold"),
+            axis.text.x=element_blank(),
+            legend.position = "none")
+    
+    p2 <- ggplot(plotdata,aes(Group,PC2)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      geom_text(data = test,aes(x = Group,y = yd2,label = PC2),
+                size = 7,color = "black",fontface = "bold")+ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.x=element_text(colour='black',size=20,angle = 45,
+                                     vjust = 1,hjust = 1,face = "bold"),
+            axis.text.y=element_blank(),
+            legend.position = "none")
+    
+    p2_r <- ggplot(plotdata,aes(Group,PC2)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      geom_text(data = test,aes(x = Group,y = yd2,label = PC2),
+                size = 7,color = "black",fontface = "bold")+coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.y=element_text(colour='black',size=20,face = "bold"),
+            axis.text.x=element_blank(),
+            legend.position = "none")
+    
+    
+    
+    p3 <- ggplot(plotdata,aes(Group,PC3)) + scale_fill_manual(values=palette) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +
+      geom_text(data = test,aes(x = Group,y = yd3,label = PC3),
+                size = 7,color = "black",fontface = "bold") +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC3,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.x=element_text(colour='black',size=20,angle = 45,
+                                     vjust = 1,hjust = 1,face = "bold"),
+            axis.text.y=element_blank(),
+            legend.position = "none")
+
+    deposit$test$PC1_test=fit1_test$comparison
+    deposit$test$PC2_test=fit2_test$comparison
+    deposit$test$PC3_test=fit3_test$comparison
+
+  }else if(method == 'ttest'){
+    group_combn=combn(as.character(unique(plotdata$Group)),2)
+    compare=plyr::alply(group_combn,2)
+    
+    #相须图绘制
+    p1 <- ggplot(plotdata,aes(Group,PC1)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      ggpubr::stat_compare_means(comparisons = compare,method="t.test")+
+      coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC1,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.y=element_text(colour='black',size=20,face = "bold"),
+            axis.text.x=element_blank(),
+            legend.position = "none")
+    
+    p2 <- ggplot(plotdata,aes(Group,PC2)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      ggpubr::stat_compare_means(comparisons = compare,method="t.test")+ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.x=element_text(colour='black',size=20,angle = 45,
+                                     vjust = 1,hjust = 1,face = "bold"),
+            axis.text.y=element_blank(),
+            legend.position = "none")
+    
+    p2_r <- ggplot(plotdata,aes(Group,PC2)) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +scale_fill_manual(values=palette)+
+      ggpubr::stat_compare_means(comparisons = compare,method="t.test")+coord_flip() +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC2,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.y=element_text(colour='black',size=20,face = "bold"),
+            axis.text.x=element_blank(),
+            legend.position = "none")
+    
+    
+    
+    p3 <- ggplot(plotdata,aes(Group,PC3)) + scale_fill_manual(values=palette) +
+      geom_boxplot(aes(fill = Group),outlier.colour = NA) +
+      ggpubr::stat_compare_means(comparisons = compare,method="t.test") +ggiraph::geom_point_interactive(aes(tooltip = paste0(sample,' : ',round(PC3,2))),position = "jitter")+
+      theme_bw()+
+      theme(axis.ticks.length = unit(0.4,"lines"),
+            axis.ticks = element_line(color='black'),
+            axis.line = element_line(colour = "black"),
+            axis.title.x=element_blank(),
+            axis.title.y=element_blank(),
+            axis.text.x=element_text(colour='black',size=20,angle = 45,
+                                     vjust = 1,hjust = 1,face = "bold"),
+            axis.text.y=element_blank(),
+            legend.position = "none")
+  }else{
+    warning('Please select the correct method !')
+  }
+
   
   #PCoA结果图绘制
   p12<-ggplot(plotdata, aes(PC1, PC2)) +
@@ -238,6 +310,11 @@ pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('HSD
           legend.key.height=unit(1,"cm")) +
     guides(fill = guide_legend(ncol = 1))
   
+  if (!is.null(ellipse)) {
+    p12 <-p12+ggplot2::stat_ellipse(aes(color=Group,group=Group),level=ellipse)+scale_colour_manual(values=palette)+guides(colour = "none")
+    p13 <-p13+ggplot2::stat_ellipse(aes(color=Group,group=Group),level=ellipse)+scale_colour_manual(values=palette)+guides(colour = "none")
+    p23 <-p23+ggplot2::stat_ellipse(aes(color=Group,group=Group),level=ellipse)+scale_colour_manual(values=palette)+guides(colour = "none")
+  }
   
   
   
@@ -270,20 +347,16 @@ pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('HSD
   #生成交互式html文件
   #注意这一步生成的html随机过程已经被锁定了，需要设定种子，而ggplot2的pdf每次提取的时候都会产生随机，应在出图时候确定种子
   set.seed(seed)
-  p12_html=girafe(code = print(p12),width_svg = width,height_svg = height)
+  p12_html=ggiraph::girafe(code = print(p12),width_svg = width,height_svg = height)
   set.seed(seed)
-  p13_html=girafe(code = print(p13),width_svg = width,height_svg = height)
+  p13_html=ggiraph::girafe(code = print(p13),width_svg = width,height_svg = height)
   set.seed(seed)
-  p23_html=girafe(code = print(p23),width_svg = width,height_svg = height)
+  p23_html=ggiraph::girafe(code = print(p23),width_svg = width,height_svg = height)
   
   #存储数据
-  deposit=list()
   deposit$pic$p12=p12
   deposit$pic$p23=p23
   deposit$pic$p13=p13
-  deposit$test$PC1_test=fit1_test$comparison
-  deposit$test$PC2_test=fit2_test$comparison
-  deposit$test$PC3_test=fit3_test$comparison
   deposit$html$p12_html=p12_html
   deposit$html$p13_html=p13_html
   deposit$html$p23_html=p23_html
@@ -292,9 +365,8 @@ pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('HSD
 }
 
 
-
 beta_plot=function(data = NULL,design,dir = NULL,group_level=c('default'),seed=123,min_relative = 0,min_ratio = 0,adjust = T,pattern = '',output = F,html_out = F,change=F,change_name='Other',
-                   method='HSD',width=15,height=15,distance = 'bray',palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+                   method='HSD',width=15,height=15,distance = 'bray',ellipse = NULL,palette=c("#E64B35FF","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                               "#B2182B","#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#CC6666") ){
   deposit=list()
   deposit$result=data_filter(dir = dir,data = data,min_relative = min_relative,min_ratio = min_ratio,design = design,adjust = adjust,pattern = pattern,output = output,change=change,change_name=change_name)
@@ -318,7 +390,7 @@ beta_plot=function(data = NULL,design,dir = NULL,group_level=c('default'),seed=1
           warning(paste0('In ',i,' level, ',samples_elimated,' was elimated, due to empty data!') )
         }
       }
-      deposit$plot[[i]]<-pca_boxplot(data =data ,design = design,group_level=group_level,seed=seed,method=method,distance=distance,palette=palette,width=width,height=height)
+      deposit$plot[[i]]<-pca_boxplot(data =data ,design = design,group_level=group_level,ellipse = ellipse,seed=seed,method=method,distance=distance,palette=palette,width=width,height=height)
       if (html_out==T) {
         htmlwidgets::saveWidget(deposit$plot[[i]]$html$p12_html, paste0(i,'_',min_relative,'_',min_ratio,'_',distance,'_',method,'_p1-2.html'))
         htmlwidgets::saveWidget(deposit$plot[[i]]$html$p13_html, paste0(i,'_',min_relative,'_',min_ratio,'_',distance,'_',method,'_p1-3.html'))

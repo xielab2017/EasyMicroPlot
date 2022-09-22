@@ -19,7 +19,6 @@ Microbial data analysis.
   \item{height}{height for plot.[Default:15]}
   \item{group_level}{Set the group order for plots. [Not necessary]}  
   \item{method}{Set method in multiple comparison: HSD,ttest,LSD(Default),duncan,scheffe,REGW,SNK.}
-  \item{beta_method}{Set method in multiple comparison: HSD,LSD(Default),duncan,scheffe,REGW,SNK.}
   \item{distance}{bray(Default),manhattan, euclidean, canberra, clark, kulczynski, jaccard, gower, altGower, morisita, horn, mountford, raup, binomial, chao, cao or mahalanobis.}
   \item{top_num}{Top number of abundance.[Default:10]}
   \item{tax_level}{Set the tax order in plot. [Not necessary]}

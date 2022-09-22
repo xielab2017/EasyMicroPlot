@@ -10,7 +10,7 @@ Correlation analysis between microbial data and meta information.
 \arguments{
   \item{data}{An dataframe containing microbial relative abundance.}
   \item{meta}{An dataframe containing subject-related data.}
-  \item{ellipse}{Determin the ellipse for groups. [Default:NULL]}
+  \item{ellipse}{Determine the ellipse for groups. [Default: NULL]}
   \item{zoom}{Set the zoom parameter for arrow and sample sites. [Default: 1,1,1]}
   \item{arrow_col}{Arrow color for microbial and meta data. [Default: #F0E442,#CC79A7]}
   \item{palette}{Colour palette.}
@@ -19,7 +19,7 @@ Correlation analysis between microbial data and meta information.
   \item{height}{height for html. [Default:15]}
 }
 \examples{
-## Load data
+## Load dat
  library(EasyMicroPlot)
  data(EMP)
 

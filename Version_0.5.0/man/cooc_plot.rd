@@ -10,7 +10,7 @@ Filtering data and making co-occurrence plot.
 \arguments{
   \item{data}{An list or dataframe contain microbial relative abundance at different levels.}
   \item{dir}{An directory contain microbial relative abundance at different levels.}
-  \item{meta_data}{Meta_data in dataffrmae format whose first column must be SampleID.}
+  \item{meta}{Meta_data in dataffrmae format whose first column must be SampleID.}
   \item{min_relative}{Set the min relative abundance for filtering.[Default:0]}
   \item{min_ratio}{Set the min ratio presence for taxonomy.[Default:0]}
   \item{design}{Mapping File.}

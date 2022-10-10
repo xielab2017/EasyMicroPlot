@@ -34,7 +34,9 @@ EasyMicroPlot package aims to provide an easy-to-use microbiome analysis tool on
 
 1. Add Student's t-test and ellipse function for beta_plot moudle.
   
-2. Fix some bugs.
+2. Add cex.axis parameter to fix display error for meta_summary
+
+3. Fix some bugs.
 
 ## Next update in plan
 - [ ] Add group parameter for structure_plot

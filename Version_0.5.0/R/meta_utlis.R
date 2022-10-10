@@ -45,7 +45,7 @@ meta_regroup_sort <- function(data,new_col_id = 'Group',regroup_level,keep_col =
 }
 
 
-meta_summary <- function(data,estimate_group,missing_plot=T,keep_col= 'SampleID',width=20,height=20){
+meta_summary <- function(data,estimate_group,missing_plot=T,keep_col= 'SampleID',width=20,height=20,cex.axis=0.5){
   deposit <- list()
   if (keep_col == 1) {
     data <- data[,-1]
@@ -56,11 +56,11 @@ meta_summary <- function(data,estimate_group,missing_plot=T,keep_col= 'SampleID'
   VIM::aggr(data,prop=F, numbers=T,combined=F,plot=missing_plot)
   deposit[['summary_info']] <- summary(data)
   deposit[['summary_table']] <- table1::table1(formula_set, data=data)
-  deposit[['missing_plot']] <- VIM::aggr(data,prop=F, numbers=T,combined=F,plot=missing_plot)
+  deposit[['missing_plot']] <- VIM::aggr(data,prop=F, numbers=T,combined=F,plot=missing_plot,cex.axis=cex.axis)
   if (missing_plot==T) {
-  pdf(paste0('missing_plot.pdf'),width = width,height = height)
-  VIM::aggr(data,prop=F, numbers=T,combined=F,plot=missing_plot)
-  dev.off()
+    pdf(paste0('missing_plot.pdf'),width = width,height = height)
+    VIM::aggr(data,prop=F, numbers=T,combined=F,plot=missing_plot,cex.axis=cex.axis)
+    dev.off()
   }
   return(deposit)
 }

@@ -11,6 +11,7 @@ Summary and regroup function for meta data.
   \item{data}{Data containing meta data.}
   \item{estimate_group}{Set estimate group for table.}
   \item{missing_plot}{Generate missing plot.[Default:True]}
+  \item{cex.axis}{Set the font size. [Default:0.5]}
   \item{keep_col}{Select reserved column.[Default:SampleID]}
   \item{new_col_id}{Set new group id.[Default:Group]}
   \item{col_str}{Select categorical column.}

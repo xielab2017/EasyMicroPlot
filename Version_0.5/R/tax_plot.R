@@ -28,8 +28,8 @@ tax_plot_ttest <- function(data,tax_select=NULL,width_total=20,height_total=20,w
     }
     compare_determin <- compare[compare_id]
     p1 <- eval(substitute(ggplot2::ggplot(data=data,aes(x=Group,y=data[,i] ))+geom_boxplot(aes(fill=Group),colour="black",notch=F,outlier.colour=NA)+
-                            ylab(i)+ggpubr::stat_compare_means(comparisons = compare_determin,method="t.test")+scale_fill_manual(values=palette)+
-                            ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001))+theme_bw(), list( i =i)))
+                            ylab(i)+ggpubr::stat_compare_means(comparisons = compare_determin,method="t.test")+scale_fill_manual(values=palette) + theme_bw() + mytheme +
+                            ggiraph::geom_jitter_interactive(aes(tooltip = paste0(SampleID,' : ',data[,i])),position = position_jitter(height = .00000001)), list( i =i)))
     # 注意html生成时应基于随机种子
     set.seed(123)
     p1_html <- ggiraph::girafe(code = print(p1),width = width,height = height)

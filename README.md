@@ -52,7 +52,7 @@ remotes::install_git("https://gitee.com/xielab2017/EasyMicroPlot/",subdir='Versi
 ## HOW TO CITE
 If you use EMP in published research, please cite this article:
 	
-**Bingdong Liu**, Liujing Huang, Zhihong Liu, Xiaohan Pan, Zongbing Cui, Jiyang Pan\*,**Liwei Xie\***. EasyMicroPlot : An Efficient and Convenient R Package in Microbiome Downstream Analysis and Visualization for Clinical Study. ***Frontiers in Genetics***. doi: [10.3389/fgene.2021.803627](https://www.frontiersin.org/articles/10.3389/fgene.2021.803627/full)
+**Bingdong Liu**, Liujing Huang, Zhihong Liu, Xiaohan Pan, Zongbing Cui, Jiyang Pan, **Liwei Xie**. EasyMicroPlot : An Efficient and Convenient R Package in Microbiome Downstream Analysis and Visualization for Clinical Study. ***Frontiers in Genetics***. doi: [10.3389/fgene.2021.803627](https://www.frontiersin.org/articles/10.3389/fgene.2021.803627/full)
 
 
 ## PUBLICATION LIST BASED ON EMP PACKAGE

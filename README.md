@@ -42,10 +42,11 @@ remotes::install_git("https://gitee.com/xielab2017/EasyMicroPlot/",subdir='Versi
 
 3. Fix some bugs.
 
-## Next update in plan
-- [ ] Add group parameter for structure_plot
-- [ ] Add Procrustes Analysis 
-- [ ] Add Anosim Analysis
+## Next update 
+The next version will be a giant change, and we will rebuild the EMP package for more exciting features.
+- [ ] Introduce tidyverse grammar into analysis process
+- [ ] Integate omics data into EMP package 
+- [ ] Design more interactive function for new beginers
 - [ ] Add more beautiful design for figures
 
 
@@ -61,6 +62,12 @@ If you use EMP in published research, please cite this article:
 2. (2021) Liujing Huang#, Bingdong Liu#, Zhihong Liu, Wanqin Feng, Minjuan Liu, Yifeng Wang, Dongxian Peng, Xiafei Fu, Honglei Zhu, Zongbin Cui, Liwei Xie ,Ying Ma Gut Microbiota Exceeds Cervical Microbiota for Early Diagnosis of Endometriosis. ***Frontiers Cellular and Infection Microbiology***
 
 3. (2022) Limin Xu*, Bingdong Liu*, Liujing Huang*, Ze Li*, Yanbo Cheng, Ye Tian, Guihua Pan, Huijun
-    Li ,Yinlan Xu, Weidong Wu, Zongbin Cui, Liwei Xie Probiotic consortia and their metabolites ameliorate the symptoms of inflammatory bowel diseases in a colitis mouse model. ***Microbiol. Spectr.***
+   Li ,Yinlan Xu, Weidong Wu, Zongbin Cui, Liwei Xie Probiotic consortia and their metabolites ameliorate the symptoms of inflammatory bowel diseases in a colitis mouse model. ***Microbiol. Spectr.***
 
 4. (2023）Yun Chen, Zihao Ou, Menglan Pang, Zixin Tao, Xifen Zheng, Zhipeng Huang, Dongni Wen, Qianbei Li, Ruisi Zhou, Peng Chen, Bo Situ, Chao Sheng, Yingying Huang, Xiaojing Yue, Lei Zheng, Liping Huang Extracellular vesicles derived from Akkermansia muciniphila promote placentation and mitigate preeclampsia in a mouse model ***Journal of Extracellular Vesicles***
+
+5. (2023) Zixin Tao, Yun Chen, Fang He, Jiawei Tang, Limei Zhan, Haoyue Hu, Ziling Ding, et al. Alterations in the Gut Microbiome and Metabolisms in Pregnancies with Fetal Growth Restriction ***Microbiol. Spectr.***
+
+6. (2023) Xue Rui , Yanjun Fu, Jie Cai, Yu Zhang, Qiang Fu,  Chengtao He Gut microbiota were altered with platelet count and red blood cell count in immune thrombocytopenia patients with different treatments ***Frontiers Cellular and Infection Microbiology***
+
+7. (2023）Yaxi Liu, Hui Wu, Bingdong Liu, Shengyun Chen, Liujing Huang, Zhihong Liu, Jie Wang, Liwei Xie, Xiaoli Wu Gut microbiota serve as a risk predictor of weight gain in schizophrenia patients with antipsychotic medication  *** Research Square preprint***

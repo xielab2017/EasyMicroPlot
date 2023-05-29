@@ -70,4 +70,4 @@ If you use EMP in published research, please cite this article:
 
 6. (2023) Xue Rui , Yanjun Fu, Jie Cai, Yu Zhang, Qiang Fu,  Chengtao He Gut microbiota were altered with platelet count and red blood cell count in immune thrombocytopenia patients with different treatments ***Frontiers Cellular and Infection Microbiology***
 
-7. (2023）Yaxi Liu, Hui Wu, Bingdong Liu, Shengyun Chen, Liujing Huang, Zhihong Liu, Jie Wang, Liwei Xie, Xiaoli Wu Gut microbiota serve as a risk predictor of weight gain in schizophrenia patients with antipsychotic medication  *** Research Square preprint***
+7. (2023）Yaxi Liu, Hui Wu, Bingdong Liu, Shengyun Chen, Liujing Huang, Zhihong Liu, Jie Wang, Liwei Xie, Xiaoli Wu Gut microbiota serve as a risk predictor of weight gain in schizophrenia patients with antipsychotic medication  ***Research Square preprint***

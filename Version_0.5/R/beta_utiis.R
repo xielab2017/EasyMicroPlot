@@ -320,7 +320,7 @@ pca_boxplot=function(data,design,seed=123,group_level=c('default'),method=c('LSD
   
   #PERMANOVA分析
   set.seed(seed)
-  otu.adonis <- vegan::adonis2(data~V2,data = groups,distance = distance)
+  otu.adonis <- vegan::adonis2(data~V2,data = groups,method = distance)
   p5 <- ggplot() +
     geom_text(aes(x = -0.5,y = 0.6,
                   label = paste(distance,

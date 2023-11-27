@@ -34,6 +34,10 @@ remotes::install_git("https://gitee.com/xielab2017/EasyMicroPlot/",subdir='Versi
   In the plan
   
 ## Version update
+* 0.5.1.24
+
+1. Fix the method parameter of adonis2 in the betaplot function.
+  
 * 0.5.1.23
 
 1. Add Student's t-test and ellipse function for beta_plot moudle.

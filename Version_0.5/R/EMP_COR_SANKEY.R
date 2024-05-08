@@ -1,6 +1,6 @@
 
 
-EMP_COR_SANKEY<- function(data_list,pvalue=0.05,rvalue=0,cor_method='spearman',sankey_ouput = F,file = 'Sankey.html' ,positive_col = 'steelblue',negtive_col = 'darkred',palette=c("#009E73","#F0E442","#E64B35FF","#CC79A7","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
+EMP_COR_SANKEY<- function(data_list,pvalue=0.05,rvalue=0,cor_method='spearman',sankey_ouput = F,file = 'Sankey.html' ,positive_col = 'darkred',negtive_col = 'steelblue',palette=c("#009E73","#F0E442","#E64B35FF","#CC79A7","#4DBBD5FF","#00A087FF","#3C5488FF","#F39B7FFF","#8491B4FF",
                                                                                          "#B2182B","#E69F00","#56B4E9","#0072B2","#D55E00","#CC6666")){
 deposit <- list()
 # contruct the relationship
@@ -94,7 +94,7 @@ data_long$IDsource=match(data_long$source, nodes$name)-1
 data_long$IDtarget=match(data_long$target, nodes$name)-1
 
 
-edge_col <- paste0(paste0('\"',c(positive_col,negtive_col),'\"'),collapse=',')
+edge_col <- paste0(paste0('\"',c(negtive_col,positive_col),'\"'),collapse=',')
 d3_node_name <- paste0(paste0('\"',group_name,'\"'),collapse=',')
 d3_node_col <- paste0(paste0('\"',palette[1:length(group_name)],'\"'),collapse=',')
 

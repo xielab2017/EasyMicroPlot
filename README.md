@@ -51,13 +51,11 @@ remotes::install_git("https://gitee.com/xielab2017/EasyMicroPlot/",subdir='Versi
 
 3. Fix some bugs.
 
-## Next update 
-The next version will be a giant change, and we will rebuild the EMP package for more exciting features.
-- [ ] Introduce tidyverse grammar into analysis process
-- [ ] Integate omics data into EMP package 
-- [ ] Design more interactive function for new beginers
-- [ ] Add more beautiful design for figures
+## Next update about EasyMultiProfiler!!
 
+The next version has been released now!
+
+More information and features: [**Click this**](https://github.com/liubingdong/EasyMultiProfiler)
 
 ## HOW TO CITE
 If you use EMP in published research, please cite this article:
